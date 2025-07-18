@@ -1,0 +1,408 @@
+---
+// Hero component for homepage personal introduction
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`hero body-scanlines body-noise ${className}`}>
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title typing">
+          Hi, I'm <span class="hero-name">Jon Hansen</span>
+        </h1>
+        <p class="hero-subtitle">
+          Full-Stack Software Engineer in Gilbert, Arizona
+        </p>
+        <p class="hero-description">
+          I build and maintain scalable APIs and modern, responsive front-end interfaces. With over four years of professional experience (most recently at NERD Power LLC), I specialize in AWS Lambda microservices, database migrations (MongoDB to PostgreSQL), and backend refactoring for performance and maintainability. My toolkit includes JavaScript (ES6+), Node.js, React, Next.js, PostgreSQL, AWS, and more. I thrive in both serverless and monolithic architectures, and am passionate about team-oriented agile methodologies, DevOps workflows, and automated testing.
+        </p>
+        <div class="hero-actions">
+          <a href="/projects" class="hero-btn btn-primary" aria-describedby="projects-description">
+            View My Work
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14"/>
+              <path d="M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="/blog" class="hero-btn btn-secondary" aria-describedby="blog-description">
+            Read Articles
+          </a>
+        </div>
+        
+        <!-- Screen reader descriptions for buttons -->
+        <div class="sr-only">
+          <span id="projects-description">Browse my portfolio of software projects and development work</span>
+          <span id="blog-description">Read my technical articles and blog posts about software development</span>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="hero-avatar">
+          <div class="avatar-placeholder" role="img" aria-label="Profile placeholder image">
+            <svg class="avatar-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Decorative elements -->
+        <div class="hero-decoration" aria-hidden="true">
+          <div class="decoration-dot decoration-dot-1"></div>
+          <div class="decoration-dot decoration-dot-2"></div>
+          <div class="decoration-dot decoration-dot-3"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator" aria-hidden="true">
+      <span class="scroll-text">Scroll to explore</span>
+      <svg class="scroll-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M7 13l3 3 3-3"/>
+        <path d="M7 6l3 3 3-3"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-primary) 0%,
+      var(--color-bg-secondary) 100%
+    );
+  }
+
+  .hero-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    width: 100%;
+    position: relative;
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    align-items: center;
+    min-height: 80vh;
+  }
+
+  .hero-text {
+    max-width: 600px;
+  }
+
+  .hero-title {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .hero-name {
+    color: var(--color-accent);
+    position: relative;
+  }
+
+  .hero-name::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent) 0%,
+      transparent 100%
+    );
+    border-radius: 2px;
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-xl);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero-description {
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-medium);
+    font-size: var(--text-base);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background-color: var(--color-accent);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-primary:hover .btn-icon {
+    transform: translateX(4px);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border-color: var(--color-border-light);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .btn-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero-avatar {
+    position: relative;
+    z-index: 2;
+  }
+
+  .avatar-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-secondary) 0%,
+      var(--color-bg-tertiary) 100%
+    );
+    border: 3px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+  }
+
+  .avatar-placeholder:hover {
+    transform: scale(1.05);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .avatar-icon {
+    color: var(--color-text-muted);
+  }
+
+  .hero-decoration {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .decoration-dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .decoration-dot-1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .decoration-dot-2 {
+    top: 60%;
+    right: 15%;
+    animation-delay: 2s;
+  }
+
+  .decoration-dot-3 {
+    bottom: 25%;
+    left: 20%;
+    animation-delay: 4s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-text {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+  }
+
+  .scroll-icon {
+    opacity: 0.7;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    40% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+      transform: translateX(-50%) translateY(-5px);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .hero-content {
+      grid-template-columns: 1fr;
+      gap: var(--space-12);
+      text-align: center;
+    }
+
+    .hero-text {
+      max-width: none;
+    }
+
+    .hero-title {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 90vh;
+    }
+
+    .hero-title {
+      font-size: var(--text-3xl);
+    }
+
+    .hero-subtitle {
+      font-size: var(--text-lg);
+    }
+
+    .hero-description {
+      font-size: var(--text-base);
+    }
+
+    .hero-actions {
+      justify-content: center;
+    }
+
+    .avatar-placeholder {
+      width: 150px;
+      height: 150px;
+    }
+
+    .avatar-icon {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-container {
+      padding: 0 var(--space-3);
+    }
+
+    .hero-content {
+      gap: var(--space-8);
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-btn {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+
+    .scroll-indicator {
+      bottom: var(--space-4);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .decoration-dot,
+    .scroll-indicator {
+      animation: none;
+    }
+
+    .hero-btn,
+    .avatar-placeholder {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,553 @@
+---
+// About page with personal information and skills
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="About"
+  description="Learn more about me, my background, skills, and experience in software development"
+  keywords={['about', 'developer', 'skills', 'experience', 'background', 'software engineer']}
+  type="website"
+>
+  <div class="about-page">
+    <!-- Hero Section -->
+    <section class="about-hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">About Me</h1>
+            <p class="hero-description">
+              Jon Hansen is a Full-Stack Software Engineer based in Gilbert, Arizona, with a strong track record of building and maintaining scalable APIs and modern, responsive front-end interfaces. Over four years of professional experience, most recently at NERD Power LLC. Proficient in JavaScript (ES6+), Node.js, React, Next.js, PostgreSQL, AWS, and more. You can find more about his work on GitHub at feline-dis and connect with him professionally on LinkedIn. He can be reached directly at 📞 480-313-6648 or 📧 jonhansen.dev@gmail.com.
+            </p>
+          </div>
+          <div class="hero-image">
+            <div class="profile-placeholder">
+              <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="60" cy="60" r="60" fill="var(--color-bg-tertiary)"/>
+                <circle cx="60" cy="45" r="20" fill="var(--color-text-secondary)"/>
+                <path d="M20 100c0-22.091 17.909-40 40-40s40 17.909 40 40" fill="var(--color-text-secondary)"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about-content">
+      <div class="container">
+        <div class="content-grid">
+          <!-- Personal Story -->
+          <div class="content-section">
+            <h2 class="section-title">My Story</h2>
+            <div class="section-content">
+              <p>
+                I started my journey in software development with a curiosity about how things work 
+                and a desire to build solutions that make a difference. Over the years, I've had 
+                the opportunity to work on diverse projects, from web applications to system 
+                architecture, always with a focus on clean code and user experience.
+              </p>
+              <p>
+                When I'm not coding, you'll find me exploring new technologies, contributing to 
+                open source projects, or writing about development practices. I believe in 
+                continuous learning and sharing knowledge with the developer community.
+              </p>
+            </div>
+          </div>
+
+          <!-- Skills Section -->
+          <div class="content-section">
+            <h2 class="section-title">Skills & Technologies</h2>
+            <div class="skills-grid">
+              <div class="skill-category">
+                <h3 class="skill-category-title">Frontend</h3>
+                <ul class="skill-list">
+                  <li class="skill-item">JavaScript / TypeScript</li>
+                  <li class="skill-item">React / Next.js</li>
+                  <li class="skill-item">Astro</li>
+                  <li class="skill-item">HTML5 / CSS3</li>
+                  <li class="skill-item">Tailwind CSS</li>
+                </ul>
+              </div>
+              
+              <div class="skill-category">
+                <h3 class="skill-category-title">Backend</h3>
+                <ul class="skill-list">
+                  <li class="skill-item">Node.js</li>
+                  <li class="skill-item">Python</li>
+                  <li class="skill-item">PostgreSQL</li>
+                  <li class="skill-item">MongoDB</li>
+                  <li class="skill-item">REST APIs</li>
+                </ul>
+              </div>
+              
+              <div class="skill-category">
+                <h3 class="skill-category-title">Tools & Practices</h3>
+                <ul class="skill-list">
+                  <li class="skill-item">Git / GitHub</li>
+                  <li class="skill-item">Docker</li>
+                  <li class="skill-item">Testing (Jest, Vitest)</li>
+                  <li class="skill-item">CI/CD</li>
+                  <li class="skill-item">Agile Development</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-content">
+          <div class="contact-header">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-description">
+              I'm always interested in new opportunities, collaborations, and conversations 
+              about technology. Feel free to reach out!
+            </p>
+          </div>
+          
+          <div class="contact-grid">
+            <!-- Contact Methods -->
+            <div class="contact-methods">
+              <h3 class="contact-subtitle">Get in Touch</h3>
+              <div class="contact-links">
+                <a 
+                  href="mailto:jonhansen.dev@gmail.com" 
+                  class="contact-link"
+                  aria-label="Send me an email"
+                >
+                  <svg class="contact-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                  <span class="contact-text">
+                    <span class="contact-label">Email</span>
+                    <span class="contact-value">jonhansen.dev@gmail.com</span>
+                  </span>
+                </a>
+                
+                <a 
+                  href="https://linkedin.com/in/feline-dis" 
+                  class="contact-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Connect with me on LinkedIn"
+                >
+                  <svg class="contact-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                  <span class="contact-text">
+                    <span class="contact-label">LinkedIn</span>
+                    <span class="contact-value">feline-dis</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="social-section">
+              <h3 class="contact-subtitle">Follow My Work</h3>
+              <div class="social-links">
+                <a 
+                  href="https://github.com/feline-dis" 
+                  class="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View my GitHub profile"
+                >
+                  <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                  <span class="social-text">GitHub</span>
+                </a>
+                
+                <a 
+                  href="https://twitter.com/yourusername" 
+                  class="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow me on Twitter"
+                >
+                  <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+                  </svg>
+                  <span class="social-text">Twitter</span>
+                </a>
+                
+                <a 
+                  href="https://dev.to/yourusername" 
+                  class="social-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Read my articles on Dev.to"
+                >
+                  <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.3zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/>
+                  </svg>
+                  <span class="social-text">Dev.to</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  /* Hero Section */
+  .about-hero {
+    padding: var(--space-20) 0 var(--space-16);
+    background-color: var(--color-bg-primary);
+  }
+
+  .hero-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+    line-height: var(--leading-tight);
+  }
+
+  .hero-description {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .profile-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    border: 3px solid var(--color-border);
+  }
+
+  /* About Content */
+  .about-content {
+    padding: var(--space-20) 0;
+    background-color: var(--color-bg-secondary);
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+  }
+
+  .content-section {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-align: center;
+  }
+
+  .section-content p {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-6);
+  }
+
+  .section-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Skills Section */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-8);
+    margin-top: var(--space-8);
+  }
+
+  .skill-category {
+    background-color: var(--color-bg-primary);
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+  }
+
+  .skill-category-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .skill-item {
+    padding: var(--space-2) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .skill-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Contact Section */
+  .contact-section {
+    padding: var(--space-20) 0;
+    background-color: var(--color-bg-primary);
+  }
+
+  .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+
+  .section-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-top: var(--space-4);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .contact-subtitle {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+  }
+
+  /* Contact Links */
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .contact-link:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+  }
+
+  .contact-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .contact-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .contact-label {
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    font-size: var(--text-base);
+  }
+
+  .contact-value {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* Social Links */
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .social-link:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .social-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .social-icon {
+    flex-shrink: 0;
+  }
+
+  .social-text {
+    font-weight: var(--font-medium);
+    font-size: var(--text-sm);
+  }
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .hero-content {
+      grid-template-columns: 2fr 1fr;
+      text-align: left;
+      gap: var(--space-16);
+    }
+
+    .hero-description {
+      margin: 0;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+    }
+
+    .social-links {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: var(--text-5xl);
+    }
+
+    .skills-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-hero {
+      padding: var(--space-16) 0 var(--space-12);
+    }
+
+    .about-content,
+    .contact-section {
+      padding: var(--space-16) 0;
+    }
+
+    .hero-title {
+      font-size: var(--text-3xl);
+    }
+
+    .hero-description {
+      font-size: var(--text-lg);
+    }
+
+    .section-title {
+      font-size: var(--text-2xl);
+    }
+
+    .skills-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+
+    .social-link {
+      min-width: 100px;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .skill-category,
+    .contact-link,
+    .social-link {
+      border-width: 2px;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .contact-link,
+    .social-link {
+      transition: none;
+    }
+
+    .contact-link:hover,
+    .social-link:hover {
+      transform: none;
+    }
+  }
+</style>

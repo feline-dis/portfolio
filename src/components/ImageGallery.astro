@@ -1,0 +1,339 @@
+---
+interface Props {
+  images: string[];
+  title: string;
+  class?: string;
+}
+
+const { images, title, class: className = '' } = Astro.props;
+
+// Filter out any empty or invalid image paths
+const validImages = images?.filter(img => img && img.trim() !== '') || [];
+---
+
+{validImages.length > 0 && (
+  <div class={`image-gallery ${className}`}>
+    <div class="gallery-grid">
+      {validImages.map((imagePath, index) => (
+        <div class="gallery-item">
+          <button 
+            class="gallery-button"
+            type="button"
+            aria-label={`View ${title} image ${index + 1} of ${validImages.length}`}
+            data-image-index={index}
+          >
+            <img
+              src={imagePath}
+              alt={`${title} screenshot ${index + 1}`}
+              loading="lazy"
+              class="gallery-image"
+              onerror="this.parentElement.parentElement.style.display='none'"
+            />
+          </button>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Modal for full-size image viewing -->
+    <div class="gallery-modal" id="gallery-modal" aria-hidden="true">
+      <div class="modal-backdrop" role="button" tabindex="0" aria-label="Close image viewer"></div>
+      <div class="modal-content">
+        <button class="modal-close" type="button" aria-label="Close image viewer">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <img class="modal-image" src="" alt="" loading="lazy" />
+        <div class="modal-navigation">
+          <button class="nav-button nav-prev" type="button" aria-label="Previous image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+          </button>
+          <span class="image-counter"></span>
+          <button class="nav-button nav-next" type="button" aria-label="Next image">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+<style>
+  .image-gallery {
+    width: 100%;
+    margin: var(--space-6) 0;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-bg-tertiary);
+  }
+
+  .gallery-button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+
+  .gallery-button:hover {
+    transform: scale(1.02);
+  }
+
+  .gallery-button:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .gallery-image:hover {
+    opacity: 0.9;
+  }
+
+  /* Modal Styles */
+  .gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gallery-modal[aria-hidden="false"] {
+    display: flex;
+  }
+
+  .modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .modal-image {
+    max-width: 100%;
+    max-height: calc(90vh - 80px);
+    object-fit: contain;
+    border-radius: var(--radius-md);
+  }
+
+  .modal-navigation {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    color: white;
+  }
+
+  .nav-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .image-counter {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .modal-content {
+      max-width: 95vw;
+      max-height: 95vh;
+    }
+
+    .modal-close {
+      top: -40px;
+      right: -10px;
+    }
+
+    .modal-navigation {
+      gap: var(--space-2);
+    }
+  }
+</style>
+
+<script>
+  // Image gallery modal functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const galleryButtons = document.querySelectorAll('.gallery-button');
+    const modal = document.getElementById('gallery-modal');
+    const modalImage = modal?.querySelector('.modal-image') as HTMLImageElement;
+    const modalClose = modal?.querySelector('.modal-close');
+    const modalBackdrop = modal?.querySelector('.modal-backdrop');
+    const prevButton = modal?.querySelector('.nav-prev') as HTMLButtonElement;
+    const nextButton = modal?.querySelector('.nav-next') as HTMLButtonElement;
+    const imageCounter = modal?.querySelector('.image-counter');
+
+    if (!modal || !modalImage) return;
+
+    let currentImages: string[] = [];
+    let currentIndex = 0;
+
+    function openModal(images: string[], index: number, _title: string) {
+      currentImages = images;
+      currentIndex = index;
+      updateModalImage();
+      if (modal) {
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        modalImage.focus();
+      }
+    }
+
+    function closeModal() {
+      if (modal) {
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function updateModalImage() {
+      if (currentImages.length === 0) return;
+      
+      modalImage.src = currentImages[currentIndex];
+      modalImage.alt = `Image ${currentIndex + 1} of ${currentImages.length}`;
+      
+      if (imageCounter) {
+        imageCounter.textContent = `${currentIndex + 1} / ${currentImages.length}`;
+      }
+
+      // Update navigation buttons
+      if (prevButton) prevButton.disabled = currentIndex === 0;
+      if (nextButton) nextButton.disabled = currentIndex === currentImages.length - 1;
+    }
+
+    function showPrevious() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateModalImage();
+      }
+    }
+
+    function showNext() {
+      if (currentIndex < currentImages.length - 1) {
+        currentIndex++;
+        updateModalImage();
+      }
+    }
+
+    // Event listeners
+    galleryButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const galleryItem = button.closest('.image-gallery');
+        if (!galleryItem) return;
+
+        const allImages = Array.from(galleryItem.querySelectorAll('.gallery-image')) as HTMLImageElement[];
+        const images = allImages.map(img => img.src);
+        const index = parseInt(button.getAttribute('data-image-index') || '0');
+        const title = allImages[0]?.alt.split(' screenshot')[0] || 'Image';
+
+        openModal(images, index, title);
+      });
+    });
+
+    modalClose?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+    prevButton?.addEventListener('click', showPrevious);
+    nextButton?.addEventListener('click', showNext);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (modal && modal.getAttribute('aria-hidden') === 'false') {
+        switch (e.key) {
+          case 'Escape':
+            closeModal();
+            break;
+          case 'ArrowLeft':
+            showPrevious();
+            break;
+          case 'ArrowRight':
+            showNext();
+            break;
+        }
+      }
+    });
+  });
+</script>

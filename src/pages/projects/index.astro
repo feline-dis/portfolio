@@ -1,0 +1,421 @@
+---
+// Projects index page - displays all projects with filtering and sorting
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+// Get all projects and sort by publish date (newest first)
+const allProjects = await getCollection('projects');
+const projects = allProjects.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+
+// Extract unique technologies for filtering
+const allTechnologies = [...new Set(
+  projects.flatMap(project => project.data.technologies)
+)].sort();
+
+// SEO and meta information
+const pageTitle = 'Projects';
+const pageDescription = 'Explore my software development projects showcasing various technologies and solutions.';
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={['projects', 'software development', 'portfolio', 'web applications', 'programming', 'coding projects']}
+  type="website"
+>
+  <div class="projects-page">
+    <!-- Page Header -->
+    <section class="page-header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="page-title">Projects</h1>
+          <p class="page-description">
+            A collection of software projects I've built, ranging from web applications to APIs and tools. 
+            Each project demonstrates different technologies and problem-solving approaches.
+          </p>
+          <div class="projects-stats">
+            <span class="stat">
+              <strong>{projects.length}</strong> Projects
+            </span>
+            <span class="stat">
+              <strong>{allTechnologies.length}</strong> Technologies
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters and Controls -->
+    <section class="projects-controls">
+      <div class="container">
+        <div class="controls-wrapper">
+          <!-- Technology Filter -->
+          <div class="filter-group">
+            <label for="tech-filter" class="filter-label">Filter by Technology:</label>
+            <select id="tech-filter" class="filter-select">
+              <option value="">All Technologies</option>
+              {allTechnologies.map(tech => (
+                <option value={tech}>{tech}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Sort Options -->
+          <div class="filter-group">
+            <label for="sort-select" class="filter-label">Sort by:</label>
+            <select id="sort-select" class="filter-select">
+              <option value="date-desc">Newest First</option>
+              <option value="date-asc">Oldest First</option>
+              <option value="title-asc">Title A-Z</option>
+              <option value="title-desc">Title Z-A</option>
+            </select>
+          </div>
+
+          <!-- Results Count -->
+          <div class="results-info">
+            <span id="results-count">{projects.length} projects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-grid-section">
+      <div class="container">
+        <div id="projects-grid" class="projects-grid">
+          {projects.map((project) => (
+            <ProjectCard 
+              project={project} 
+              class="project-grid-item"
+            />
+          ))}
+        </div>
+
+        <!-- No Results Message (hidden by default) -->
+        <div id="no-results" class="no-results" style="display: none;">
+          <div class="no-results-content">
+            <h3>No projects found</h3>
+            <p>Try adjusting your filters to see more projects.</p>
+            <button id="clear-filters" class="btn-secondary">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .projects-page {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  /* Page Header */
+  .page-header {
+    padding: var(--space-16) 0 var(--space-12);
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-primary) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-tight);
+  }
+
+  .page-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-6);
+  }
+
+  .projects-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+  }
+
+  .stat strong {
+    color: var(--color-accent);
+    font-weight: var(--font-semibold);
+  }
+
+  /* Controls Section */
+  .projects-controls {
+    padding: var(--space-8) 0;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .controls-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .filter-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+  }
+
+  .filter-select {
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    min-width: 160px;
+    transition: all var(--transition-fast);
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  .filter-select:hover {
+    border-color: var(--color-border-light);
+  }
+
+  .results-info {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-left: auto;
+  }
+
+  /* Projects Grid */
+  .projects-grid-section {
+    padding: var(--space-12) 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  .project-grid-item {
+    opacity: 1;
+    transition: opacity var(--transition-base);
+  }
+
+  .project-grid-item.hidden {
+    display: none;
+  }
+
+  /* No Results */
+  .no-results {
+    text-align: center;
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .no-results-content h3 {
+    font-size: var(--text-xl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .no-results-content p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-medium);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-light);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: var(--text-3xl);
+    }
+
+    .page-description {
+      font-size: var(--text-base);
+    }
+
+    .projects-stats {
+      gap: var(--space-4);
+    }
+
+    .controls-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-4);
+    }
+
+    .filter-group {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+    }
+
+    .filter-select {
+      min-width: auto;
+    }
+
+    .results-info {
+      margin-left: 0;
+      text-align: center;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Client-side filtering and sorting functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const techFilter = document.getElementById('tech-filter') as HTMLSelectElement;
+    const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+    const projectsGrid = document.getElementById('projects-grid') as HTMLElement;
+    const resultsCount = document.getElementById('results-count') as HTMLElement;
+    const noResults = document.getElementById('no-results') as HTMLElement;
+    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
+
+    // Get all project cards
+    const projectCards = Array.from(projectsGrid.querySelectorAll('.project-grid-item')) as HTMLElement[];
+
+    // Extract project data for filtering/sorting
+    const projectData = projectCards.map(card => {
+      const titleElement = card.querySelector('.project-title a') as HTMLAnchorElement;
+      const dateElement = card.querySelector('.project-date') as HTMLTimeElement;
+      const techElements = card.querySelectorAll('.tech-badge') as NodeListOf<HTMLElement>;
+      
+      return {
+        element: card,
+        title: titleElement?.textContent?.trim() || '',
+        date: dateElement?.getAttribute('datetime') || '',
+        technologies: Array.from(techElements).map(el => el.textContent?.trim() || '')
+      };
+    });
+
+    function filterAndSort() {
+      const selectedTech = techFilter.value;
+      const sortBy = sortSelect.value;
+
+      // Filter projects
+      let filteredProjects = projectData.filter(project => {
+        if (!selectedTech) return true;
+        return project.technologies.includes(selectedTech);
+      });
+
+      // Sort projects
+      filteredProjects.sort((a, b) => {
+        switch (sortBy) {
+          case 'date-asc':
+            return new Date(a.date).getTime() - new Date(b.date).getTime();
+          case 'date-desc':
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          case 'title-asc':
+            return a.title.localeCompare(b.title);
+          case 'title-desc':
+            return b.title.localeCompare(a.title);
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
+
+      // Hide all projects first
+      projectCards.forEach(card => {
+        card.classList.add('hidden');
+      });
+
+      // Show filtered and sorted projects
+      filteredProjects.forEach((project, index) => {
+        project.element.classList.remove('hidden');
+        project.element.style.order = index.toString();
+      });
+
+      // Update results count
+      const count = filteredProjects.length;
+      resultsCount.textContent = `${count} project${count !== 1 ? 's' : ''}`;
+
+      // Show/hide no results message
+      if (count === 0) {
+        noResults.style.display = 'block';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+
+    function clearFilters() {
+      techFilter.value = '';
+      sortSelect.value = 'date-desc';
+      filterAndSort();
+    }
+
+    // Event listeners
+    techFilter.addEventListener('change', filterAndSort);
+    sortSelect.addEventListener('change', filterAndSort);
+    clearFiltersBtn.addEventListener('click', clearFilters);
+
+    // Initial filter/sort
+    filterAndSort();
+  });
+</script>

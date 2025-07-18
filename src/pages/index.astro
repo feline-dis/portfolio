@@ -1,0 +1,279 @@
+---
+// Homepage with hero and featured content
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get featured projects and blog posts
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects
+  .filter(project => project.data.featured)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+
+const allBlogPosts = await getCollection('blog');
+const featuredBlogPosts = allBlogPosts
+  .filter(post => post.data.featured && !post.data.draft)
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+ 
+---
+
+{console.log({renderProjs: featuredProjects.length > 0})}
+<BaseLayout 
+  title="Home"
+  description="Welcome to my portfolio - showcasing software projects and technical articles"
+  keywords={['portfolio', 'software developer', 'web development', 'projects', 'blog', 'programming']}
+  type="website"
+>
+  <!-- Hero Section -->
+  <Hero />
+  
+  <!-- Featured Projects Section -->
+  {featuredProjects.length > 0 && (
+    <section class="featured-section projects-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-description">
+            A selection of my recent work showcasing different technologies and approaches
+          </p>
+          <a href="/projects" class="section-link">
+            View all projects
+            <svg class="link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"/>
+              <path d="M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="projects-grid">
+          {featuredProjects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <!-- Featured Blog Posts Section -->
+  {featuredBlogPosts.length > 0 && (
+    <section class="featured-section blog-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Latest Articles</h2>
+          <p class="section-description">
+            Technical insights, tutorials, and thoughts on software development
+          </p>
+          <a href="/blog" class="section-link">
+            View all articles
+            <svg class="link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"/>
+              <path d="M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="blog-grid">
+          {featuredBlogPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .featured-section {
+    padding: var(--space-20) 0;
+    position: relative;
+  }
+
+  .projects-section {
+    background-color: var(--color-bg-primary);
+  }
+
+  .blog-section {
+    background-color: var(--color-bg-secondary);
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-tight);
+  }
+
+  .section-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-6);
+  }
+
+  .section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-accent);
+    font-weight: var(--font-medium);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .section-link:hover {
+    color: var(--color-accent-hover);
+    background-color: rgba(59, 130, 246, 0.1);
+    gap: var(--space-3);
+  }
+
+  .section-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .link-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .section-link:hover .link-icon {
+    transform: translateX(2px);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-8);
+    align-items: stretch;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    align-items: stretch;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .featured-section {
+      padding: var(--space-16) 0;
+    }
+
+    .section-header {
+      margin-bottom: var(--space-12);
+    }
+
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+    }
+
+    .blog-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-5);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .featured-section {
+      padding: var(--space-12) 0;
+    }
+
+    .container {
+      padding: 0 var(--space-3);
+    }
+
+    .section-header {
+      margin-bottom: var(--space-10);
+    }
+
+    .section-title {
+      font-size: var(--text-2xl);
+    }
+
+    .section-description {
+      font-size: var(--text-base);
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .featured-section {
+      padding: var(--space-10) 0;
+    }
+
+    .section-header {
+      margin-bottom: var(--space-8);
+    }
+
+    .section-link {
+      font-size: var(--text-sm);
+    }
+  }
+
+  /* Grid layout improvements for better visual balance */
+  @media (min-width: 1200px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Handle single or two items gracefully */
+  .projects-grid:has(:nth-child(1):last-child) {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .projects-grid:has(:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .blog-grid:has(:nth-child(1):last-child) {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .blog-grid:has(:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 750px;
+    margin: 0 auto;
+  }
+</style>

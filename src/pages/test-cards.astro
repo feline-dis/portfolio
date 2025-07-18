@@ -1,0 +1,71 @@
+---
+// Test page for card components
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get sample content
+const projects = await getCollection('projects');
+const blogPosts = await getCollection('blog');
+
+const sampleProject = projects[0];
+const sampleBlogPost = blogPosts[0];
+---
+
+<BaseLayout 
+  title="Card Components Test"
+  description="Testing ProjectCard and BlogCard components"
+>
+  <div class="test-page">
+    <div class="container">
+      <h1>Card Components Test</h1>
+      
+      <section class="test-section">
+        <h2>ProjectCard Component</h2>
+        {sampleProject && (
+          <div class="card-grid">
+            <ProjectCard project={sampleProject} />
+          </div>
+        )}
+      </section>
+      
+      <section class="test-section">
+        <h2>BlogCard Component</h2>
+        {sampleBlogPost && (
+          <div class="card-grid">
+            <BlogCard post={sampleBlogPost} />
+          </div>
+        )}
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .test-page {
+    padding: var(--space-8) 0;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .test-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .test-section h2 {
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-6);
+    max-width: 600px;
+  }
+</style>

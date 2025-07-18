@@ -1,0 +1,53 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website built with Astro",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "build:analyze": "astro build --analyze",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:all": "node test-runner.cjs --all",
+    "test:accessibility": "vitest --run tests/accessibility/",
+    "test:visual": "vitest --run tests/visual/",
+    "test:components": "vitest --run tests/components/",
+    "test:content": "vitest --run tests/content/",
+    "lighthouse": "lighthouse http://localhost:4321 --output=html --output-path=./lighthouse-report.html",
+    "perf:audit": "npm run build && npm run preview & sleep 5 && npm run lighthouse && pkill -f 'astro preview'",
+    "test:e2e": "node tests/performance/lighthouse-test.js",
+    "test:runner": "node test-runner.cjs"
+  },
+  "keywords": [
+    "astro",
+    "portfolio",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "astro": "^5.12.0",
+    "sharp": "^0.34.3",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/node": "^24.0.14",
+    "@vitest/ui": "^3.2.4",
+    "chrome-launcher": "^1.2.0",
+    "happy-dom": "^18.0.1",
+    "jsdom": "^26.1.0",
+    "lighthouse": "^12.8.0",
+    "puppeteer": "^24.14.0",
+    "vitest": "^3.2.4"
+  }
+}

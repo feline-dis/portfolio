@@ -1,0 +1,285 @@
+---
+// BlogCard component for displaying blog post previews
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+  class?: string;
+}
+
+const { post, class: className = '' } = Astro.props;
+const { title, description, publishDate, tags } = post.data;
+
+// Format date for display
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
+
+// Calculate reading time (rough estimate)
+const calculateReadingTime = (content: string) => {
+  const wordsPerMinute = 200;
+  const wordCount = content.split(/\s+/).length;
+  const readingTime = Math.ceil(wordCount / wordsPerMinute);
+  return readingTime;
+};
+
+const readingTime = calculateReadingTime(post.body);
+---
+
+<article class={`blog-card ${className}`}>
+  <div class="blog-content">
+    <!-- Blog Header -->
+    <div class="blog-header">
+      <div class="blog-meta">
+        <time class="blog-date" datetime={publishDate.toISOString()}>
+          {formatDate(publishDate)}
+        </time>
+        <span class="blog-reading-time">
+          {readingTime} min read
+        </span>
+      </div>
+      
+      {post.data.featured && (
+        <span class="featured-badge" aria-label="Featured article">
+          <svg class="featured-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+          </svg>
+          Featured
+        </span>
+      )}
+    </div>
+    
+    <!-- Blog Title -->
+    <h3 class="blog-title">
+      <a href={`/blog/${post.slug}`} class="blog-link">
+        {title}
+      </a>
+    </h3>
+    
+    <!-- Blog Description -->
+    <p class="blog-description">
+      {description}
+    </p>
+    
+    <!-- Tags -->
+    {tags && tags.length > 0 && (
+      <div class="blog-tags">
+        {tags.map((tag) => (
+          <span class="tag-badge">#{tag}</span>
+        ))}
+      </div>
+    )}
+    
+    <!-- Read More Link -->
+    <div class="blog-footer">
+      <a href={`/blog/${post.slug}`} class="read-more-link">
+        Read more
+        <svg class="read-more-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M5 12h14"/>
+          <path d="M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .blog-card {
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-card:hover {
+    border-color: var(--color-border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .blog-content {
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .blog-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .blog-date {
+    font-weight: var(--font-medium);
+  }
+
+  .blog-reading-time {
+    position: relative;
+  }
+
+  .blog-reading-time::before {
+    content: '•';
+    margin-right: var(--space-2);
+    color: var(--color-border-light);
+  }
+
+  .featured-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    background-color: rgba(245, 194, 231, 0.1); /* --color-accent, 0.1 */
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(245, 194, 231, 0.2); /* --color-accent, 0.2 */
+    flex-shrink: 0;
+  }
+
+  .featured-icon {
+    fill: currentColor;
+  }
+
+  .blog-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    margin: 0 0 var(--space-4) 0;
+    line-height: var(--leading-tight);
+  }
+
+  .blog-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .blog-link:hover {
+    color: var(--color-accent);
+  }
+
+  .blog-description {
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-4);
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-border);
+    transition: all var(--transition-fast);
+  }
+
+  .tag-badge:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--color-accent);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+
+  .blog-footer {
+    margin-top: auto;
+  }
+
+  .read-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-accent);
+    font-weight: var(--font-medium);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    padding: var(--space-2) 0;
+  }
+
+  .read-more-link:hover {
+    color: var(--color-accent-hover);
+    gap: var(--space-3);
+  }
+
+  .read-more-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-base);
+  }
+
+  .read-more-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  .read-more-link:hover .read-more-icon {
+    transform: translateX(2px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 640px) {
+    .blog-content {
+      padding: var(--space-4);
+    }
+
+    .blog-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .blog-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-1);
+    }
+
+    .blog-reading-time::before {
+      display: none;
+    }
+
+    .blog-title {
+      font-size: var(--text-lg);
+    }
+  }
+
+  /* Dark mode specific adjustments */
+  @media (prefers-color-scheme: dark) {
+    .blog-card {
+      background-color: var(--color-bg-secondary);
+    }
+  }
+</style>

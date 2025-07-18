@@ -1,0 +1,536 @@
+---
+// Blog index page - displays all published blog posts with filtering and search
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+// Get all published blog posts, sorted by publication date (newest first)
+const allBlogPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
+});
+
+// Sort posts by publication date (newest first)
+const sortedPosts = allBlogPosts.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+
+// Get all unique tags for filtering
+const allTags = [...new Set(
+  allBlogPosts
+    .flatMap(post => post.data.tags || [])
+    .filter(Boolean)
+)].sort();
+
+// Get featured posts
+const featuredPosts = sortedPosts.filter(post => post.data.featured);
+
+// SEO and meta information
+const pageTitle = 'Blog';
+const pageDescription = 'Technical articles, tutorials, and insights about web development, programming, and software engineering.';
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+  keywords={['blog', 'technical articles', 'programming tutorials', 'software development', 'coding tips', 'web development']}
+  type="website"
+>
+  <div class="blog-page">
+    <!-- Page Header -->
+    <section class="blog-header">
+      <div class="container">
+        <div class="header-content">
+          <h1 class="page-title">Blog</h1>
+          <p class="page-description">
+            Technical articles, tutorials, and insights about web development, programming, and software engineering.
+          </p>
+          
+          <!-- Blog Stats -->
+          <div class="blog-stats">
+            <span class="stat-item">
+              <strong>{sortedPosts.length}</strong> 
+              {sortedPosts.length === 1 ? 'article' : 'articles'}
+            </span>
+            {featuredPosts.length > 0 && (
+              <span class="stat-item">
+                <strong>{featuredPosts.length}</strong> featured
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search and Filter Controls -->
+    <section class="blog-controls">
+      <div class="container">
+        <div class="controls-wrapper">
+          <!-- Search Input -->
+          <div class="search-container">
+            <label for="blog-search" class="search-label">Search articles</label>
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input 
+                type="search" 
+                id="blog-search" 
+                class="search-input"
+                placeholder="Search by title, description, or tags..."
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <!-- Tag Filter -->
+          <div class="filter-container">
+            <label for="tag-filter" class="filter-label">Filter by tag</label>
+            <select id="tag-filter" class="tag-filter">
+              <option value="">All tags</option>
+              {allTags.map(tag => (
+                <option value={tag}>{tag}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Sort Options -->
+          <div class="sort-container">
+            <label for="sort-select" class="sort-label">Sort by</label>
+            <select id="sort-select" class="sort-select">
+              <option value="date-desc">Newest first</option>
+              <option value="date-asc">Oldest first</option>
+              <option value="title-asc">Title A-Z</option>
+              <option value="title-desc">Title Z-A</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Posts Section -->
+    {featuredPosts.length > 0 && (
+      <section class="featured-section">
+        <div class="container">
+          <h2 class="section-title">Featured Articles</h2>
+          <div class="featured-grid">
+            {featuredPosts.slice(0, 2).map(post => (
+              <BlogCard post={post} class="featured-card" />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- All Posts Section -->
+    <section class="all-posts-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            {featuredPosts.length > 0 ? 'All Articles' : 'Latest Articles'}
+          </h2>
+          <div class="results-info">
+            <span id="results-count">{sortedPosts.length} articles</span>
+          </div>
+        </div>
+
+        <!-- Posts Grid -->
+        <div id="posts-grid" class="posts-grid">
+          {sortedPosts.map(post => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="no-results" style="display: none;">
+          <div class="no-results-content">
+            <svg class="no-results-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <h3 class="no-results-title">No articles found</h3>
+            <p class="no-results-description">
+              Try adjusting your search terms or filters to find what you're looking for.
+            </p>
+            <button id="clear-filters" class="clear-filters-btn">
+              Clear all filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-page {
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  /* Page Header */
+  .blog-header {
+    padding: var(--space-16) 0 var(--space-12);
+    background: linear-gradient(
+      135deg,
+      var(--color-bg-primary) 0%,
+      var(--color-bg-secondary) 100%
+    );
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-tight);
+  }
+
+  .page-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-6);
+  }
+
+  .blog-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .stat-item strong {
+    color: var(--color-accent);
+    font-weight: var(--font-semibold);
+  }
+
+  /* Controls Section */
+  .blog-controls {
+    padding: var(--space-8) 0;
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .controls-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .search-container,
+  .filter-container,
+  .sort-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .search-label,
+  .filter-label,
+  .sort-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: var(--space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+  }
+
+  .search-input,
+  .tag-filter,
+  .sort-select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    font-size: var(--text-base);
+    transition: all var(--transition-fast);
+  }
+
+  .search-input {
+    padding-left: var(--space-10);
+  }
+
+  .search-input:focus,
+  .tag-filter:focus,
+  .sort-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Featured Section */
+  .featured-section {
+    padding: var(--space-12) 0;
+    background-color: var(--color-bg-primary);
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-8);
+    text-align: center;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* All Posts Section */
+  .all-posts-section {
+    padding: var(--space-12) 0 var(--space-16);
+    background-color: var(--color-bg-primary);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-8);
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .results-info {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  /* No Results */
+  .no-results {
+    text-align: center;
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .no-results-content {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .no-results-icon {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .no-results-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .no-results-description {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    line-height: var(--leading-relaxed);
+  }
+
+  .clear-filters-btn {
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .clear-filters-btn:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-1px);
+  }
+
+  .clear-filters-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Responsive Design */
+  @media (min-width: 640px) {
+    .controls-wrapper {
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .featured-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-title {
+      font-size: var(--text-3xl);
+    }
+
+    .blog-stats {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<script>
+  // Blog filtering and search functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('blog-search') as HTMLInputElement;
+    const tagFilter = document.getElementById('tag-filter') as HTMLSelectElement;
+    const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+    const postsGrid = document.getElementById('posts-grid') as HTMLElement;
+    const noResults = document.getElementById('no-results') as HTMLElement;
+    const resultsCount = document.getElementById('results-count') as HTMLElement;
+    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
+
+    // Get all blog posts data
+    const allPosts = Array.from(postsGrid.children).map(card => {
+      const element = card as HTMLElement;
+      const titleElement = element.querySelector('.blog-title a');
+      const descriptionElement = element.querySelector('.blog-description');
+      const tagsElements = element.querySelectorAll('.tag-badge');
+      const dateElement = element.querySelector('.blog-date');
+      
+      return {
+        element,
+        title: titleElement?.textContent?.toLowerCase() || '',
+        description: descriptionElement?.textContent?.toLowerCase() || '',
+        tags: Array.from(tagsElements).map(tag => tag.textContent?.replace('#', '').toLowerCase() || ''),
+        date: dateElement?.getAttribute('datetime') || '',
+        originalIndex: Array.from(postsGrid.children).indexOf(card)
+      };
+    });
+
+    function filterAndSortPosts() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      const selectedTag = tagFilter.value.toLowerCase();
+      const sortBy = sortSelect.value;
+
+      // Filter posts
+      let filteredPosts = allPosts.filter(post => {
+        const matchesSearch = !searchTerm || 
+          post.title.includes(searchTerm) || 
+          post.description.includes(searchTerm) ||
+          post.tags.some(tag => tag.includes(searchTerm));
+        
+        const matchesTag = !selectedTag || post.tags.includes(selectedTag);
+        
+        return matchesSearch && matchesTag;
+      });
+
+      // Sort posts
+      filteredPosts.sort((a, b) => {
+        switch (sortBy) {
+          case 'date-asc':
+            return new Date(a.date).getTime() - new Date(b.date).getTime();
+          case 'date-desc':
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          case 'title-asc':
+            return a.title.localeCompare(b.title);
+          case 'title-desc':
+            return b.title.localeCompare(a.title);
+          default:
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+        }
+      });
+
+      // Update display
+      updatePostsDisplay(filteredPosts);
+      updateResultsCount(filteredPosts.length);
+    }
+
+    function updatePostsDisplay(filteredPosts: typeof allPosts) {
+      // Hide all posts
+      allPosts.forEach(post => {
+        post.element.style.display = 'none';
+      });
+
+      if (filteredPosts.length === 0) {
+        postsGrid.style.display = 'none';
+        noResults.style.display = 'block';
+      } else {
+        postsGrid.style.display = 'grid';
+        noResults.style.display = 'none';
+        
+        // Show and reorder filtered posts
+        filteredPosts.forEach((post, index) => {
+          post.element.style.display = 'block';
+          post.element.style.order = index.toString();
+        });
+      }
+    }
+
+    function updateResultsCount(count: number) {
+      const text = count === 1 ? '1 article' : `${count} articles`;
+      resultsCount.textContent = text;
+    }
+
+    function clearAllFilters() {
+      searchInput.value = '';
+      tagFilter.value = '';
+      sortSelect.value = 'date-desc';
+      filterAndSortPosts();
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterAndSortPosts);
+    tagFilter.addEventListener('change', filterAndSortPosts);
+    sortSelect.addEventListener('change', filterAndSortPosts);
+    clearFiltersBtn.addEventListener('click', clearAllFilters);
+
+    // Initialize with default state
+    filterAndSortPosts();
+  });
+</script>

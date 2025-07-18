@@ -1,0 +1,359 @@
+---
+// Reusable contact section component with professional links and social media
+export interface Props {
+  title?: string;
+  description?: string;
+  showTitle?: boolean;
+  compact?: boolean;
+}
+
+const {
+  title = "Let's Connect",
+  description = "Jon Hansen is a Full-Stack Software Engineer based in Gilbert, Arizona, with a strong track record of building and maintaining scalable APIs and modern, responsive front-end interfaces. Over four years of professional experience, most recently at NERD Power LLC. Proficient in JavaScript (ES6+), Node.js, React, Next.js, PostgreSQL, AWS, and more. Reach out at 📞 480-313-6648 or 📧 jonhansen.dev@gmail.com.",
+  showTitle = true,
+  compact = false
+} = Astro.props;
+
+// Contact information - these would typically come from a config file or CMS
+const contactInfo = {
+  email: 'jonhansen.dev@gmail.com',
+  linkedin: 'https://linkedin.com/in/feline-dis',
+  github: 'https://github.com/feline-dis',
+  twitter: '',
+  devto: ''
+};
+---
+
+<section class={`contact-section ${compact ? 'compact' : ''}`}>
+  <div class="container">
+    <div class="contact-content">
+      {showTitle && (
+        <div class="contact-header">
+          <h2 class="section-title">{title}</h2>
+          <p class="section-description">{description}</p>
+        </div>
+      )}
+      
+      <div class="contact-grid">
+        <!-- Primary Contact Methods -->
+        <div class="contact-methods">
+          <h3 class="contact-subtitle">Get in Touch</h3>
+          <div class="contact-links">
+            <a 
+              href={`mailto:${contactInfo.email}`}
+              class="contact-link"
+              aria-label="Send me an email"
+            >
+              <svg class="contact-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span class="contact-text">
+                <span class="contact-label">Email</span>
+                <span class="contact-value">{contactInfo.email}</span>
+              </span>
+            </a>
+            
+            <a 
+              href={contactInfo.linkedin}
+              class="contact-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Connect with me on LinkedIn"
+            >
+              <svg class="contact-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                <rect x="2" y="9" width="4" height="12"/>
+                <circle cx="4" cy="4" r="2"/>
+              </svg>
+              <span class="contact-text">
+                <span class="contact-label">LinkedIn</span>
+                <span class="contact-value">Professional Profile</span>
+              </span>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Social Media Links -->
+        <div class="social-section">
+          <h3 class="contact-subtitle">Follow My Work</h3>
+          <div class="social-links">
+            <a 
+              href={contactInfo.github}
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View my GitHub profile"
+            >
+              <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+              <span class="social-text">GitHub</span>
+            </a>
+            
+            <a 
+              href={contactInfo.twitter}
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow me on Twitter"
+            >
+              <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+              </svg>
+              <span class="social-text">Twitter</span>
+            </a>
+            
+            <a 
+              href={contactInfo.devto}
+              class="social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Read my articles on Dev.to"
+            >
+              <svg class="social-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M7.42 10.05c-.18-.16-.46-.23-.84-.23H6l.02 2.44.04 2.45.56-.02c.41 0 .63-.07.83-.26.24-.24.26-.36.26-2.2 0-1.91-.02-1.96-.29-2.18zM0 4.94v14.12h24V4.94H0zM8.56 15.3c-.44.58-1.06.77-2.53.77H4.71V8.53h1.4c1.67 0 2.16.18 2.6.9.27.43.29.6.32 2.57.05 2.23-.02 2.73-.47 3.3zm5.09-5.47h-2.47v1.77h1.52v1.28l-.72.04-.75.03v1.77l1.22.03 1.2.04v1.28h-1.6c-1.53 0-1.6-.01-1.87-.3l-.3-.28v-3.16c0-3.02.01-3.18.25-3.48.23-.31.25-.31 1.88-.31h1.64v1.3zm4.68 5.45c-.17.43-.64.79-1 .79-.18 0-.45-.15-.67-.39-.32-.32-.45-.63-.82-2.08l-.9-3.39-.45-1.67h.76c.4 0 .75.02.75.05 0 .06 1.16 4.54 1.26 4.83.04.15.32-.7.73-2.3l.66-2.52.74-.04c.4-.02.73 0 .73.04 0 .14-1.67 6.38-1.8 6.68z"/>
+              </svg>
+              <span class="social-text">Dev.to</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-section {
+    padding: var(--space-20) 0;
+    background-color: var(--color-bg-primary);
+  }
+
+  .contact-section.compact {
+    padding: var(--space-12) 0;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+  }
+
+  .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+  }
+
+  .section-title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    line-height: var(--leading-tight);
+  }
+
+  .section-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .contact-subtitle {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-6);
+  }
+
+  /* Contact Links */
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .contact-link:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
+    transform: translateY(-2px);
+  }
+
+  .contact-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .contact-icon {
+    flex-shrink: 0;
+    color: var(--color-accent);
+  }
+
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .contact-label {
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    font-size: var(--text-base);
+  }
+
+  .contact-value {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  /* Social Links */
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .social-link:hover {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .social-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .social-icon {
+    flex-shrink: 0;
+  }
+
+  .social-text {
+    font-weight: var(--font-medium);
+    font-size: var(--text-sm);
+  }
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+    }
+
+    .social-links {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .contact-section {
+      padding: var(--space-16) 0;
+    }
+
+    .contact-section.compact {
+      padding: var(--space-10) 0;
+    }
+
+    .section-title {
+      font-size: var(--text-2xl);
+    }
+
+    .section-description {
+      font-size: var(--text-base);
+    }
+
+    .contact-subtitle {
+      font-size: var(--text-lg);
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+
+    .social-link {
+      min-width: 100px;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .contact-link,
+    .social-link {
+      border-width: 2px;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .contact-link,
+    .social-link {
+      transition: none;
+    }
+
+    .contact-link:hover,
+    .social-link:hover {
+      transform: none;
+    }
+  }
+
+  /* Focus management for keyboard navigation */
+  .contact-link:focus,
+  .social-link:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Ensure proper color contrast */
+  .contact-link:hover .contact-label,
+  .contact-link:hover .contact-value {
+    color: var(--color-text-primary);
+  }
+
+  /* Screen reader improvements */
+  .contact-icon,
+  .social-icon {
+    pointer-events: none;
+  }
+</style>
