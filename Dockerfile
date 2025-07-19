@@ -33,6 +33,7 @@ WORKDIR /app
 # Copy built application from builder stage
 COPY --from=builder --chown=astro:nodejs /app/dist ./dist
 COPY --from=builder --chown=astro:nodejs /app/package*.json ./
+COPY --from=builder --chown=astro:nodejs /app/serve.json ./
 
 # Install only production dependencies
 RUN npm ci --only=production --silent && \
@@ -54,5 +55,5 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the application using serve to serve static files
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Start the application using serve to serve static files with proper MIME types
+CMD ["serve", "-s", "dist", "-l", "3000", "--cors"]
