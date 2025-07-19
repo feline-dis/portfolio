@@ -10,12 +10,13 @@ export default defineConfig({
 
   // Markdown configuration with syntax highlighting
   markdown: {
-    syntaxHighlight: "prism",
+    syntaxHighlight: "shiki",
     remarkPlugins: [],
     rehypePlugins: [],
     shikiConfig: {
-      theme: "dark-plus",
+      theme: "github-dark",
       wrap: true,
+      langs: [],
     },
   },
 
