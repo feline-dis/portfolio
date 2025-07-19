@@ -3,9 +3,9 @@ title: "Portfolio Website"
 description: "A modern portfolio website built with Astro and TypeScript"
 technologies: ["Astro", "TypeScript", "CSS", "Markdown"]
 featured: true
-liveUrl: "https://myportfolio.dev"
-githubUrl: "https://github.com/username/portfolio"
-images: ["/images/projects/portfolio-1.png"]
+liveUrl: "https://jonhansen.dev"
+githubUrl: "https://github.com/feline-dis/portfolio"
+images: []
 publishDate: 2024-02-01
 ---
 

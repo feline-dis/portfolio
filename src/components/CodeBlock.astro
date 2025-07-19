@@ -1,104 +1,134 @@
 ---
-// CodeBlock component with syntax highlighting and copy functionality
+// CodeBlock component with Shiki syntax highlighting and copy functionality
+import { Code } from 'astro:components';
+
 export interface Props {
   code: string;
-  language?: string;
+  lang?: string;
   title?: string;
-  showLineNumbers?: boolean;
-  highlightLines?: number[];
+  theme?: string;
+  wrap?: boolean;
   class?: string;
 }
 
-const { 
-  code, 
-  language = 'text', 
-  title, 
-  showLineNumbers = false, 
-  highlightLines = [],
-  class: className = '' 
+const {
+  code,
+  lang = "plaintext",
+  title,
+  theme = "github-dark",
+  wrap = false,
+  class: className = "",
 } = Astro.props;
 
 // Generate unique ID for this code block
 const codeBlockId = `code-${Math.random().toString(36).substring(2, 11)}`;
-
-// Process code lines for line numbers and highlighting
-const codeLines = code.trim().split('\n');
-const hasHighlights = highlightLines.length > 0;
 ---
 
-<div class={`code-block ${className}`} data-language={language}>
-  {title && (
-    <div class="code-header">
-      <div class="code-title">
-        <span class="code-language">{language}</span>
-        <span class="code-filename">{title}</span>
+<div class={`code-block ${className}`} data-language={lang}>
+  {
+    title && (
+      <div class="code-header">
+        <div class="code-title">
+          <span class="code-language">{lang}</span>
+          <span class="code-filename">{title}</span>
+        </div>
+        <button
+          class="copy-button"
+          data-code-id={codeBlockId}
+          aria-label="Copy code to clipboard"
+          title="Copy code"
+        >
+          <svg
+            class="copy-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+          </svg>
+          <svg
+            class="check-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="display: none;"
+          >
+            <polyline points="20,6 9,17 4,12" />
+          </svg>
+          <span class="copy-text">Copy</span>
+        </button>
       </div>
-      <button 
-        class="copy-button" 
-        data-code-id={codeBlockId}
-        aria-label="Copy code to clipboard"
-        title="Copy code"
-      >
-        <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-        </svg>
-        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-          <polyline points="20,6 9,17 4,12"/>
-        </svg>
-        <span class="copy-text">Copy</span>
-      </button>
-    </div>
-  )}
-  
+    )
+  }
+
   <div class="code-container">
-    {!title && (
-      <button 
-        class="copy-button copy-button-overlay" 
-        data-code-id={codeBlockId}
-        aria-label="Copy code to clipboard"
-        title="Copy code"
-      >
-        <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-          <path d="M4 16c-1.1 0-2-.9-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-        </svg>
-        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
-          <polyline points="20,6 9,17 4,12"/>
-        </svg>
-      </button>
-    )}
-    
-    <pre class="code-pre" data-code-id={codeBlockId}><code class={`language-${language}`}>{showLineNumbers ? (
-      codeLines.map((line, index) => {
-        const lineNumber = index + 1;
-        const isHighlighted = hasHighlights && highlightLines.includes(lineNumber);
-        return (
-          <span class={`code-line ${isHighlighted ? 'highlighted' : ''}`} data-line={lineNumber}>
-            <span class="line-number">{lineNumber}</span>
-            <span class="line-content">{line}</span>
-          </span>
-        );
-      }).join('\n')
-    ) : code.trim()}</code></pre>
+    {
+      !title && (
+        <button
+          class="copy-button copy-button-overlay"
+          data-code-id={codeBlockId}
+          aria-label="Copy code to clipboard"
+          title="Copy code"
+        >
+          <svg
+            class="copy-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+          </svg>
+          <svg
+            class="check-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            style="display: none;"
+          >
+            <polyline points="20,6 9,17 4,12" />
+          </svg>
+        </button>
+      )
+    }
+
+    <Code 
+      code={code.trim()} 
+      lang={lang} 
+      theme={theme}
+      wrap={wrap}
+    />
   </div>
-  
+
   <!-- Hidden textarea for copying -->
-  <textarea 
+  <textarea
     id={codeBlockId}
     class="copy-textarea"
     readonly
     tabindex="-1"
-    aria-hidden="true"
-  >{code.trim()}</textarea>
+    aria-hidden="true">{code.trim()}</textarea
+  >
 </div>
 
 <style>
   .code-block {
     position: relative;
     margin: var(--space-6) 0;
-    border-radius: var(--radius-lg);
-    background-color: var(--color-code-bg, #1e1e1e);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     overflow: hidden;
   }
@@ -108,7 +138,7 @@ const hasHighlights = highlightLines.length > 0;
     justify-content: space-between;
     align-items: center;
     padding: var(--space-3) var(--space-4);
-    background-color: var(--color-bg-secondary);
+    background-color: var(--color-bg-tertiary);
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -137,7 +167,7 @@ const hasHighlights = highlightLines.length > 0;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
-    background-color: var(--color-bg-tertiary);
+    background-color: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-base);
     color: var(--color-text-secondary);
@@ -188,7 +218,7 @@ const hasHighlights = highlightLines.length > 0;
   }
 
   .copy-button.copied .copy-text::after {
-    content: 'ied';
+    content: "ied";
   }
 
   .code-container {
@@ -196,50 +226,31 @@ const hasHighlights = highlightLines.length > 0;
     overflow-x: auto;
   }
 
-  .code-pre {
-    margin: 0;
-    padding: var(--space-4);
-    background: transparent;
-    color: var(--color-code-text, #d4d4d4);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    line-height: var(--leading-relaxed);
+  /* Override Shiki's default styles to match our design system */
+  .code-container :global(.astro-code) {
+    padding: var(--space-4) !important;
+    margin: 0 !important;
+    background: transparent !important;
+    font-family: var(--font-mono) !important;
+    font-size: var(--text-sm) !important;
+    line-height: var(--leading-relaxed) !important;
+    border-radius: 0 !important;
+  }
+
+  .code-container :global(.astro-code pre) {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
     overflow-x: auto;
     white-space: pre;
   }
 
-  .code-pre code {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-    font-size: inherit;
-    color: inherit;
-  }
-
-  /* Line numbers and highlighting */
-  .code-line {
-    display: block;
-    position: relative;
-  }
-
-  .code-line.highlighted {
-    background-color: rgba(59, 130, 246, 0.1);
-    border-left: 3px solid var(--color-accent);
-    padding-left: calc(var(--space-2) - 3px);
-  }
-
-  .line-number {
-    display: inline-block;
-    width: 3em;
-    text-align: right;
-    margin-right: var(--space-3);
-    color: var(--color-text-muted);
-    user-select: none;
-    font-size: var(--text-xs);
-  }
-
-  .line-content {
-    display: inline-block;
+  .code-container :global(.astro-code code) {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-size: inherit !important;
+    color: inherit !important;
   }
 
   .copy-textarea {
@@ -249,71 +260,15 @@ const hasHighlights = highlightLines.length > 0;
     pointer-events: none;
   }
 
-  /* Syntax highlighting colors */
-  .code-pre .token.comment,
-  .code-pre .token.prolog,
-  .code-pre .token.doctype,
-  .code-pre .token.cdata {
-    color: #6a9955;
-  }
-
-  .code-pre .token.punctuation {
-    color: #d4d4d4;
-  }
-
-  .code-pre .token.property,
-  .code-pre .token.tag,
-  .code-pre .token.boolean,
-  .code-pre .token.number,
-  .code-pre .token.constant,
-  .code-pre .token.symbol,
-  .code-pre .token.deleted {
-    color: #b5cea8;
-  }
-
-  .code-pre .token.selector,
-  .code-pre .token.attr-name,
-  .code-pre .token.string,
-  .code-pre .token.char,
-  .code-pre .token.builtin,
-  .code-pre .token.inserted {
-    color: #ce9178;
-  }
-
-  .code-pre .token.operator,
-  .code-pre .token.entity,
-  .code-pre .token.url,
-  .code-pre .language-css .token.string,
-  .code-pre .style .token.string {
-    color: #d4d4d4;
-  }
-
-  .code-pre .token.atrule,
-  .code-pre .token.attr-value,
-  .code-pre .token.keyword {
-    color: #569cd6;
-  }
-
-  .code-pre .token.function,
-  .code-pre .token.class-name {
-    color: #dcdcaa;
-  }
-
-  .code-pre .token.regex,
-  .code-pre .token.important,
-  .code-pre .token.variable {
-    color: #d16969;
-  }
-
   /* Responsive design */
   @media (max-width: 640px) {
     .code-header {
       padding: var(--space-2) var(--space-3);
     }
 
-    .code-pre {
-      padding: var(--space-3);
-      font-size: var(--text-xs);
+    .code-container :global(.astro-code) {
+      padding: var(--space-3) !important;
+      font-size: var(--text-xs) !important;
     }
 
     .copy-button-overlay {
@@ -328,57 +283,60 @@ const hasHighlights = highlightLines.length > 0;
     }
   }
 
-  /* Dark theme adjustments */
-  @media (prefers-color-scheme: dark) {
-    .code-block {
-      --color-code-bg: #1e1e1e;
-      --color-code-text: #d4d4d4;
+  /* Ensure proper scrolling on mobile */
+  @media (max-width: 480px) {
+    .code-container {
+      -webkit-overflow-scrolling: touch;
     }
   }
 </style>
 
 <script>
   // Copy functionality for code blocks
-  document.addEventListener('DOMContentLoaded', function() {
-    const copyButtons = document.querySelectorAll('.copy-button');
-    
-    copyButtons.forEach(button => {
-      button.addEventListener('click', async function(this: HTMLButtonElement) {
-        const codeId = this.getAttribute('data-code-id');
-        if (!codeId) return;
-        const textarea = document.getElementById(codeId) as HTMLTextAreaElement;
-        
-        if (!textarea) return;
-        
-        try {
-          // Try using the modern clipboard API first
-          if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(textarea.value);
-          } else {
-            // Fallback for older browsers
+  document.addEventListener("DOMContentLoaded", function () {
+    const copyButtons = document.querySelectorAll(".copy-button");
+
+    copyButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        async function (this: HTMLButtonElement) {
+          const codeId = this.getAttribute("data-code-id");
+          if (!codeId) return;
+          const textarea = document.getElementById(
+            codeId,
+          ) as HTMLTextAreaElement;
+
+          if (!textarea) return;
+
+          try {
+            // Try using the modern clipboard API first
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(textarea.value);
+            } else {
+              // Fallback for older browsers
+              textarea.select();
+              textarea.setSelectionRange(0, 99999); // For mobile devices
+              document.execCommand("copy");
+              textarea.blur();
+            }
+
+            // Show success state
+            this.classList.add("copied");
+
+            // Reset after 2 seconds
+            const button = this;
+            setTimeout(() => {
+              button.classList.remove("copied");
+            }, 2000);
+          } catch (err) {
+            console.error("Failed to copy code:", err);
+
+            // Fallback: select the text for manual copying
             textarea.select();
-            textarea.setSelectionRange(0, 99999); // For mobile devices
-            document.execCommand('copy');
-            textarea.blur();
+            textarea.setSelectionRange(0, 99999);
           }
-          
-          // Show success state
-          this.classList.add('copied');
-          
-          // Reset after 2 seconds
-          const button = this;
-          setTimeout(() => {
-            button.classList.remove('copied');
-          }, 2000);
-          
-        } catch (err) {
-          console.error('Failed to copy code:', err);
-          
-          // Fallback: select the text for manual copying
-          textarea.select();
-          textarea.setSelectionRange(0, 99999);
-        }
-      });
+        },
+      );
     });
   });
 </script>
