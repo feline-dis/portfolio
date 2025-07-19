@@ -281,7 +281,7 @@ export function initializeAccessibility(): void {
   }
 
   // Enhanced focus management
-  const focusManager = new FocusManager();
+  // const focusManager = new FocusManager(); // TODO: Implement focus management features
 
   // Handle escape key globally
   document.addEventListener('keydown', (event) => {

@@ -495,7 +495,11 @@ const breadcrumbs = [
             document.body.appendChild(textarea);
             textarea.focus();
             textarea.select();
-            document.execCommand('copy');
+            try {
+              document.execCommand('copy');
+            } catch (fallbackErr) {
+              console.warn("Copy fallback failed:", fallbackErr);
+            }
             textarea.remove();
           }
           

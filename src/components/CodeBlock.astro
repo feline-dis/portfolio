@@ -1,21 +1,22 @@
 ---
 // CodeBlock component with Shiki syntax highlighting and copy functionality
 import { Code } from 'astro:components';
+import type { BundledLanguage, BundledTheme } from 'shiki';
 
 export interface Props {
   code: string;
-  lang?: string;
+  lang?: BundledLanguage | string;
   title?: string;
-  theme?: string;
+  theme?: BundledTheme | string;
   wrap?: boolean;
   class?: string;
 }
 
 const {
   code,
-  lang = "plaintext",
+  lang = "plaintext" as BundledLanguage,
   title,
-  theme = "github-dark",
+  theme = "github-dark" as BundledTheme,
   wrap = false,
   class: className = "",
 } = Astro.props;
@@ -107,8 +108,8 @@ const codeBlockId = `code-${Math.random().toString(36).substring(2, 11)}`;
 
     <Code 
       code={code.trim()} 
-      lang={lang} 
-      theme={theme}
+      lang={lang as BundledLanguage} 
+      theme={theme as BundledTheme}
       wrap={wrap}
     />
   </div>
@@ -316,7 +317,11 @@ const codeBlockId = `code-${Math.random().toString(36).substring(2, 11)}`;
               // Fallback for older browsers
               textarea.select();
               textarea.setSelectionRange(0, 99999); // For mobile devices
-              document.execCommand("copy");
+              try {
+                document.execCommand("copy");
+              } catch (fallbackErr) {
+                console.warn("Copy fallback failed:", fallbackErr);
+              }
               textarea.blur();
             }
 
