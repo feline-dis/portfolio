@@ -55,5 +55,5 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the application using serve to serve static files with proper MIME types
-CMD ["serve", "-s", "dist", "-l", "3000", "--cors"]
+# Start the application using serve to serve static files with proper routing
+CMD ["serve", "dist", "-l", "3000", "--cors"]

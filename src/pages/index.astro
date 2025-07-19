@@ -1,89 +1,115 @@
 ---
 // Homepage with hero and featured content
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import BlogCard from '../components/BlogCard.astro';
-import { getCollection } from 'astro:content';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import BlogCard from "../components/BlogCard.astro";
+import { getCollection } from "astro:content";
 
 // Get featured projects and blog posts
-const allProjects = await getCollection('projects');
+const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
-  .filter(project => project.data.featured)
+  .filter((project) => project.data.featured)
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 3);
 
-const allBlogPosts = await getCollection('blog');
+const allBlogPosts = await getCollection("blog");
 const featuredBlogPosts = allBlogPosts
-  .filter(post => post.data.featured && !post.data.draft)
+  .filter((post) => post.data.featured && !post.data.draft)
   .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
   .slice(0, 3);
- 
 ---
 
-{console.log({renderProjs: featuredProjects.length > 0})}
-<BaseLayout 
+{console.log({ renderProjs: featuredProjects.length > 0 })}
+<BaseLayout
   title="Home"
   description="Hey there! Check out what I've been building and the random tech stuff I write about"
-  keywords={['portfolio', 'software developer', 'web development', 'projects', 'blog', 'programming']}
+  keywords={[
+    "portfolio",
+    "software developer",
+    "web development",
+    "projects",
+    "blog",
+    "programming",
+  ]}
   type="website"
 >
   <!-- Hero Section -->
   <Hero />
-  
+
   <!-- Featured Projects Section -->
-  {featuredProjects.length > 0 && (
-    <section class="featured-section projects-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Stuff I've Built</h2>
-          <p class="section-description">
-            Some cool things I've been working on lately
-          </p>
-          <a href="/projects" class="section-link">
-            See everything
-            <svg class="link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14"/>
-              <path d="M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+  {
+    featuredProjects.length > 0 && (
+      <section class="featured-section projects-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Stuff I've Built</h2>
+            <p class="section-description">
+              Some cool things I've been working on lately
+            </p>
+            <a href="/projects" class="section-link">
+              See everything
+              <svg
+                class="link-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="projects-grid">
+            {featuredProjects.map((project) => (
+              <ProjectCard project={project} />
+            ))}
+          </div>
         </div>
-        
-        <div class="projects-grid">
-          {featuredProjects.map((project) => (
-            <ProjectCard project={project} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
-  
+      </section>
+    )
+  }
+
   <!-- Featured Blog Posts Section -->
-  {featuredBlogPosts.length > 0 && (
-    <section class="featured-section blog-section">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Things I Write About</h2>
-          <p class="section-description">
-            Random thoughts on code, tech, and whatever I'm figuring out
-          </p>
-          <a href="/blog" class="section-link">
-            Read more
-            <svg class="link-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14"/>
-              <path d="M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+  {
+    featuredBlogPosts.length > 0 && (
+      <section class="featured-section blog-section">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Things I Write About</h2>
+            <p class="section-description">
+              Random thoughts on code, tech, and whatever I'm figuring out
+            </p>
+            <a href="/blog" class="section-link">
+              Read more
+              <svg
+                class="link-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="blog-grid">
+            {featuredBlogPosts.map((post) => (
+              <BlogCard post={post} />
+            ))}
+          </div>
         </div>
-        
-        <div class="blog-grid">
-          {featuredBlogPosts.map((post) => (
-            <BlogCard post={post} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )}
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -162,19 +188,29 @@ const featuredBlogPosts = allBlogPosts
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-8);
     align-items: stretch;
   }
 
   .blog-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-6);
     align-items: stretch;
   }
 
-  /* Responsive Design */
+  /* Responsive Design - Mobile First */
+  @media (min-width: 640px) {
+    .projects-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .blog-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+
   @media (max-width: 1024px) {
     .featured-section {
       padding: var(--space-16) 0;
@@ -185,12 +221,10 @@ const featuredBlogPosts = allBlogPosts
     }
 
     .projects-grid {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: var(--space-6);
     }
 
     .blog-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: var(--space-5);
     }
   }
@@ -252,28 +286,30 @@ const featuredBlogPosts = allBlogPosts
     }
   }
 
-  /* Handle single or two items gracefully */
-  .projects-grid:has(:nth-child(1):last-child) {
-    grid-template-columns: 1fr;
-    max-width: 500px;
-    margin: 0 auto;
-  }
+  /* Handle single or two items gracefully - only on larger screens */
+  @media (min-width: 769px) {
+    .projects-grid:has(:nth-child(1):last-child) {
+      grid-template-columns: 1fr;
+      max-width: 500px;
+      margin: 0 auto;
+    }
 
-  .projects-grid:has(:nth-child(2):last-child) {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 800px;
-    margin: 0 auto;
-  }
+    .projects-grid:has(:nth-child(2):last-child) {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 800px;
+      margin: 0 auto;
+    }
 
-  .blog-grid:has(:nth-child(1):last-child) {
-    grid-template-columns: 1fr;
-    max-width: 450px;
-    margin: 0 auto;
-  }
+    .blog-grid:has(:nth-child(1):last-child) {
+      grid-template-columns: 1fr;
+      max-width: 450px;
+      margin: 0 auto;
+    }
 
-  .blog-grid:has(:nth-child(2):last-child) {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 750px;
-    margin: 0 auto;
+    .blog-grid:has(:nth-child(2):last-child) {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 750px;
+      margin: 0 auto;
+    }
   }
 </style>
