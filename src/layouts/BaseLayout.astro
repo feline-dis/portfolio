@@ -1,12 +1,13 @@
 ---
 // Base layout component with navigation, footer, and comprehensive SEO
-import Navigation from '../components/Navigation.astro';
+import Navigation from "../components/Navigation.astro";
+import "../styles/global.css";
 
 export interface Props {
   title?: string;
   description?: string;
   image?: string;
-  type?: 'website' | 'article';
+  type?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
   tags?: string[];
@@ -17,85 +18,92 @@ export interface Props {
 }
 
 const {
-  title = 'Portfolio',
-  description = 'Personal portfolio website showcasing software projects and technical articles',
-  image = '/favicon.svg',
-  type = 'website',
+  title = "Portfolio",
+  description = "Personal portfolio website showcasing software projects and technical articles",
+  image = "/favicon.svg",
+  type = "website",
   publishedTime,
   modifiedTime,
   tags = [],
   canonicalURL,
   keywords = [],
-  author = 'Portfolio Developer',
-  noindex = false
+  author = "Portfolio Developer",
+  noindex = false,
 } = Astro.props;
 
 // Get current URL for canonical and social sharing
 const currentURL = canonicalURL || Astro.url.href;
-const fullTitle = title === 'Portfolio' ? title : `${title} | Portfolio`;
+const fullTitle = title === "Portfolio" ? title : `${title} | Portfolio`;
 
 // Construct absolute URLs for social sharing
-const siteURL = Astro.site || new URL('http://localhost:4321');
+const siteURL = Astro.site || new URL("http://localhost:4321");
 const imageURL = new URL(image, siteURL).href;
 
 // Generate structured data for better search visibility
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": type === 'article' ? 'Article' : 'WebSite',
-  "name": fullTitle,
-  "description": description,
-  "url": currentURL,
-  "image": imageURL,
-  "author": {
+  "@type": type === "article" ? "Article" : "WebSite",
+  name: fullTitle,
+  description: description,
+  url: currentURL,
+  image: imageURL,
+  author: {
     "@type": "Person",
-    "name": author
+    name: author,
   },
-  ...(type === 'article' && publishedTime && {
-    "datePublished": publishedTime,
-    "dateModified": modifiedTime || publishedTime
-  }),
-  ...(type === 'website' && {
-    "potentialAction": {
+  ...(type === "article" &&
+    publishedTime && {
+      datePublished: publishedTime,
+      dateModified: modifiedTime || publishedTime,
+    }),
+  ...(type === "website" && {
+    potentialAction: {
       "@type": "SearchAction",
-      "target": {
+      target: {
         "@type": "EntryPoint",
-        "urlTemplate": `${siteURL.origin}/search?q={search_term_string}`
+        urlTemplate: `${siteURL.origin}/search?q={search_term_string}`,
       },
-      "query-input": "required name=search_term_string"
-    }
-  })
+      "query-input": "required name=search_term_string",
+    },
+  }),
 };
 
 // Social media and contact links
 const socialLinks = [
-  { name: 'GitHub', url: 'https://github.com/feline-dis', icon: 'github' },
-  { name: 'LinkedIn', url: 'https://linkedin.com/in/feline-dis', icon: 'linkedin' },
-  { name: 'Email', url: 'mailto:jonhansen.dev@gmail.com', icon: 'email' }
+  { name: "GitHub", url: "https://github.com/feline-dis", icon: "github" },
+  {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/feline-dis",
+    icon: "linkedin",
+  },
+  { name: "Email", url: "mailto:jonhansen.dev@gmail.com", icon: "email" },
 ];
 
 // Generate meta keywords
 const metaKeywords = [
-  'portfolio',
-  'software developer',
-  'web development',
-  'programming',
-  'projects',
-  'blog',
+  "portfolio",
+  "software developer",
+  "web development",
+  "programming",
+  "projects",
+  "blog",
   ...keywords,
-  ...tags
-].filter(Boolean).join(', ');
+  ...tags,
+]
+  .filter(Boolean)
+  .join(", ");
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
+
     <!-- Primary Meta Tags -->
     <title>{fullTitle}</title>
     <meta name="title" content={fullTitle} />
@@ -104,10 +112,10 @@ const metaKeywords = [
     <meta name="author" content={author} />
     <meta name="language" content="en" />
     <meta name="theme-color" content="#1a1a1a" />
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href={currentURL} />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={currentURL} />
@@ -117,7 +125,7 @@ const metaKeywords = [
     <meta property="og:image:alt" content={`${fullTitle} - Portfolio`} />
     <meta property="og:site_name" content="Portfolio" />
     <meta property="og:locale" content="en_US" />
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={currentURL} />
@@ -127,98 +135,124 @@ const metaKeywords = [
     <meta name="twitter:image:alt" content={`${fullTitle} - Portfolio`} />
     <meta name="twitter:creator" content="@portfolio" />
     <meta name="twitter:site" content="@portfolio" />
-    
+
     <!-- Article specific meta tags -->
-    {type === 'article' && publishedTime && (
-      <meta property="article:published_time" content={publishedTime} />
-    )}
-    {type === 'article' && modifiedTime && (
-      <meta property="article:modified_time" content={modifiedTime} />
-    )}
-    {type === 'article' && author && (
-      <meta property="article:author" content={author} />
-    )}
-    {type === 'article' && tags.length > 0 && tags.map(tag => (
-      <meta property="article:tag" content={tag} />
-    ))}
-    
+    {
+      type === "article" && publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
+    {
+      type === "article" && modifiedTime && (
+        <meta property="article:modified_time" content={modifiedTime} />
+      )
+    }
+    {
+      type === "article" && author && (
+        <meta property="article:author" content={author} />
+      )
+    }
+    {
+      type === "article" &&
+        tags.length > 0 &&
+        tags.map((tag) => <meta property="article:tag" content={tag} />)
+    }
+
     <!-- SEO and Indexing -->
-    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
-    <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-    
+    <meta
+      name="robots"
+      content={noindex
+        ? "noindex, nofollow"
+        : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+    />
+    <meta
+      name="googlebot"
+      content={noindex ? "noindex, nofollow" : "index, follow"}
+    />
+
     <!-- Performance and Security -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-TileColor" content="#1a1a1a" />
-    
+
     <!-- Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+
     <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+
     <!-- Preload critical resources -->
-    <link rel="preload" href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2" as="font" type="font/woff2" crossorigin />
-    
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="/src/styles/global.css" />
-    
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Global Styles will be imported via Astro's style processing -->
+
     <!-- Performance monitoring and accessibility initialization script -->
     <script>
       // Inline critical performance monitoring
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         // Measure page load time
-        window.addEventListener('load', function() {
+        window.addEventListener("load", function () {
           const loadTime = performance.now();
-          console.log('Page load time:', loadTime.toFixed(2) + 'ms');
+          console.log("Page load time:", loadTime.toFixed(2) + "ms");
         });
-        
+
         // Optimize font loading
-        if ('fonts' in document) {
-          document.fonts.ready.then(function() {
-            console.log('Fonts loaded');
+        if ("fonts" in document) {
+          document.fonts.ready.then(function () {
+            console.log("Fonts loaded");
           });
         }
-        
+
         // Initialize performance optimizations
         try {
           // Simple performance monitoring without external module
-          if ('PerformanceObserver' in window) {
+          if ("PerformanceObserver" in window) {
             const observer = new PerformanceObserver((list) => {
               const entries = list.getEntries();
               entries.forEach((entry) => {
-                if (entry.entryType === 'largest-contentful-paint') {
-                  console.log('LCP:', entry.startTime.toFixed(2) + 'ms');
+                if (entry.entryType === "largest-contentful-paint") {
+                  console.log("LCP:", entry.startTime.toFixed(2) + "ms");
                 }
               });
             });
-            observer.observe({ entryTypes: ['largest-contentful-paint'] });
+            observer.observe({ entryTypes: ["largest-contentful-paint"] });
           }
         } catch (err) {
-          console.warn('Performance monitoring not supported');
+          console.warn("Performance monitoring not supported");
         }
 
         // Initialize accessibility features
         // Add focus-visible polyfill behavior for older browsers
-        if (!CSS.supports('selector(:focus-visible)')) {
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-              document.body.classList.add('keyboard-navigation');
+        if (!CSS.supports("selector(:focus-visible)")) {
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Tab") {
+              document.body.classList.add("keyboard-navigation");
             }
           });
 
-          document.addEventListener('mousedown', () => {
-            document.body.classList.remove('keyboard-navigation');
+          document.addEventListener("mousedown", () => {
+            document.body.classList.remove("keyboard-navigation");
           });
         }
 
         // Global escape key handler
-        document.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape') {
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
             // Close any open modals, menus, etc.
-            const openElements = document.querySelectorAll('[aria-expanded="true"]');
-            openElements.forEach(element => {
+            const openElements = document.querySelectorAll(
+              '[aria-expanded="true"]',
+            );
+            openElements.forEach((element) => {
               if (element instanceof HTMLElement) {
                 element.click(); // Trigger close
               }
@@ -233,10 +267,10 @@ const metaKeywords = [
             currentPath = window.location.pathname;
             const title = document.title;
             // Simple screen reader announcement
-            const announcer = document.createElement('div');
-            announcer.setAttribute('aria-live', 'polite');
-            announcer.setAttribute('aria-atomic', 'true');
-            announcer.className = 'sr-only';
+            const announcer = document.createElement("div");
+            announcer.setAttribute("aria-live", "polite");
+            announcer.setAttribute("aria-atomic", "true");
+            announcer.className = "sr-only";
             announcer.textContent = `Navigated to ${title}`;
             document.body.appendChild(announcer);
             setTimeout(() => {
@@ -249,7 +283,7 @@ const metaKeywords = [
 
         observer.observe(document.body, {
           childList: true,
-          subtree: true
+          subtree: true,
         });
 
         // Run accessibility tests in development
@@ -257,31 +291,49 @@ const metaKeywords = [
           // Simple color contrast test
           const testColorContrast = () => {
             const combinations = [
-              { name: 'Primary text on primary bg', fg: '#ffffff', bg: '#1a1a1a' },
-              { name: 'Secondary text on primary bg', fg: '#d1d5db', bg: '#1a1a1a' },
-              { name: 'Muted text on primary bg', fg: '#9ca3af', bg: '#1a1a1a' },
-              { name: 'Accent on primary bg', fg: '#60a5fa', bg: '#1a1a1a' },
+              {
+                name: "Primary text on primary bg",
+                fg: "#ffffff",
+                bg: "#1a1a1a",
+              },
+              {
+                name: "Secondary text on primary bg",
+                fg: "#d1d5db",
+                bg: "#1a1a1a",
+              },
+              {
+                name: "Muted text on primary bg",
+                fg: "#9ca3af",
+                bg: "#1a1a1a",
+              },
+              { name: "Accent on primary bg", fg: "#60a5fa", bg: "#1a1a1a" },
             ];
 
             const calculateRatio = (fg: string, bg: string) => {
               const getLuminance = (color: string) => {
-                const hex = color.replace('#', '');
+                const hex = color.replace("#", "");
                 const r = parseInt(hex.substring(0, 2), 16) / 255;
                 const g = parseInt(hex.substring(2, 4), 16) / 255;
                 const b = parseInt(hex.substring(4, 6), 16) / 255;
-                const sRGB = [r, g, b].map(c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+                const sRGB = [r, g, b].map((c) =>
+                  c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4),
+                );
                 return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
               };
               const lum1 = getLuminance(fg);
               const lum2 = getLuminance(bg);
-              return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+              return (
+                (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05)
+              );
             };
 
-            console.group('🎨 Color Contrast Test Results');
-            combinations.forEach(combo => {
+            console.group("🎨 Color Contrast Test Results");
+            combinations.forEach((combo) => {
               const ratio = calculateRatio(combo.fg, combo.bg);
               const passes = ratio >= 4.5;
-              console.log(`${passes ? '✅' : '❌'} ${combo.name}: ${ratio.toFixed(2)}:1`);
+              console.log(
+                `${passes ? "✅" : "❌"} ${combo.name}: ${ratio.toFixed(2)}:1`,
+              );
             });
             console.groupEnd();
           };
@@ -290,7 +342,7 @@ const metaKeywords = [
         }
       }
     </script>
-    
+
     <!-- Skip links and accessibility styles -->
     <style>
       /* Skip links for keyboard navigation */
@@ -303,7 +355,7 @@ const metaKeywords = [
         gap: var(--space-2);
         padding: var(--space-2);
       }
-      
+
       .skip-link {
         background: var(--color-accent);
         color: var(--color-text-primary);
@@ -315,16 +367,16 @@ const metaKeywords = [
         border: 2px solid var(--color-accent);
         transition: all var(--transition-fast);
       }
-      
+
       .skip-links:focus-within {
         top: var(--space-2);
       }
-      
+
       .skip-link:focus {
         outline: 2px solid var(--color-text-primary);
         outline-offset: 2px;
       }
-      
+
       .skip-link:hover {
         background: var(--color-accent-hover);
         border-color: var(--color-accent-hover);
@@ -353,7 +405,7 @@ const metaKeywords = [
       }
     </style>
   </head>
-  
+
   <body>
     <!-- Skip links for accessibility -->
     <div class="skip-links">
@@ -361,19 +413,19 @@ const metaKeywords = [
       <a href="#navigation" class="skip-link">Skip to navigation</a>
       <a href="#footer" class="skip-link">Skip to footer</a>
     </div>
-    
+
     <!-- Header with Navigation -->
     <header role="banner">
       <div id="navigation">
         <Navigation currentPath={Astro.url.pathname} />
       </div>
     </header>
-    
+
     <!-- Main Content -->
     <main id="main-content" role="main">
       <slot />
     </main>
-    
+
     <!-- Footer -->
     <footer id="footer" class="site-footer" role="contentinfo">
       <div class="footer-container">
@@ -382,10 +434,15 @@ const metaKeywords = [
           <div class="footer-brand">
             <h3 class="footer-title">Portfolio</h3>
             <p class="footer-description">
-              Jon Hansen is a Full-Stack Software Engineer based in Gilbert, Arizona, with a strong track record of building and maintaining scalable APIs and modern, responsive front-end interfaces. Over four years of professional experience, most recently at NERD Power LLC. Proficient in JavaScript (ES6+), Node.js, React, Next.js, PostgreSQL, AWS, and more.
+              Jon Hansen is a Full-Stack Software Engineer based in Gilbert,
+              Arizona, with a strong track record of building and maintaining
+              scalable APIs and modern, responsive front-end interfaces. Over
+              four years of professional experience, most recently at NERD Power
+              LLC. Proficient in JavaScript (ES6+), Node.js, React, Next.js,
+              PostgreSQL, AWS, and more.
             </p>
           </div>
-          
+
           <!-- Quick Links -->
           <div class="footer-section">
             <h4 class="footer-section-title">Quick Links</h4>
@@ -396,34 +453,41 @@ const metaKeywords = [
               <li><a href="/about" class="footer-link">About</a></li>
             </ul>
           </div>
-          
+
           <!-- Social Links -->
           <div class="footer-section">
             <h4 class="footer-section-title">Connect</h4>
             <ul class="footer-social">
-              {socialLinks.map(({ name, url, icon }) => (
-                <li>
-                  <a 
-                    href={url} 
-                    class="footer-social-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Visit ${name} profile`}
-                  >
-                    <span class="social-icon" data-icon={icon}></span>
-                    {name}
-                  </a>
-                </li>
-              ))}
+              {
+                socialLinks.map(({ name, url, icon }) => (
+                  <li>
+                    <a
+                      href={url}
+                      class="footer-social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Visit ${name} profile`}
+                    >
+                      <span class="social-icon" data-icon={icon} />
+                      {name}
+                    </a>
+                  </li>
+                ))
+              }
             </ul>
           </div>
         </div>
-        
+
         <!-- Footer Bottom -->
         <div class="footer-bottom">
           <p class="footer-copyright">
-            © {new Date().getFullYear()} Portfolio. Built with 
-            <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="footer-link">Astro</a>.
+            © {new Date().getFullYear()} Portfolio. Built with
+            <a
+              href="https://astro.build"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link">Astro</a
+            >.
           </p>
         </div>
       </div>
