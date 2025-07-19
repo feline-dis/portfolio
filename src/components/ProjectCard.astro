@@ -26,9 +26,9 @@ const formatDate = (date: Date) => {
       <img 
         src={images[0]} 
         alt={`Screenshot of ${title} project showing the main interface`}
-        loading="lazy"
         class="project-img"
-        onerror="this.parentElement.style.display='none'; this.parentElement.parentElement.classList.add('no-image');"
+        onload="console.log('Image loaded successfully:', this.src);"
+        onerror="console.log('Image failed to load:', this.src); this.parentElement.style.display='none'; this.parentElement.parentElement.classList.add('no-image');"
       />
       <div class="image-fallback" style="display: none;">
         <svg class="fallback-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -149,6 +149,9 @@ const formatDate = (date: Date) => {
     height: 100%;
     object-fit: cover;
     transition: transform var(--transition-base);
+    position: relative;
+    z-index: 1;
+    display: block;
   }
 
   .project-card:hover .project-img {

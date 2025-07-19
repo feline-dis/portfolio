@@ -8,8 +8,8 @@ export interface Props {
 }
 
 const {
-  title = "Let's Connect",
-  description = "Jon Hansen is a Full-Stack Software Engineer based in Gilbert, Arizona, with a strong track record of building and maintaining scalable APIs and modern, responsive front-end interfaces. Over four years of professional experience, most recently at NERD Power LLC. Proficient in JavaScript (ES6+), Node.js, React, Next.js, PostgreSQL, AWS, and more. Reach out at 📞 480-313-6648 or 📧 jonhansen.dev@gmail.com.",
+  title = "Let's Chat",
+  description = "I'm Jon, a guy who likes building cool stuff with code from Arizona. Been doing the web development thing for about 4 years and love working with JavaScript, React, Node.js, and whatever else gets the job done. Always down to talk about tech, collaborate on projects, or just grab coffee. Hit me up! 📞 480-313-6648 or 📧 jonhansen.dev@gmail.com",
   showTitle = true,
   compact = false
 } = Astro.props;
@@ -37,7 +37,7 @@ const contactInfo = {
       <div class="contact-grid">
         <!-- Primary Contact Methods -->
         <div class="contact-methods">
-          <h3 class="contact-subtitle">Get in Touch</h3>
+          <h3 class="contact-subtitle">Drop Me a Line</h3>
           <div class="contact-links">
             <a 
               href={`mailto:${contactInfo.email}`}
@@ -68,7 +68,7 @@ const contactInfo = {
               </svg>
               <span class="contact-text">
                 <span class="contact-label">LinkedIn</span>
-                <span class="contact-value">Professional Profile</span>
+                <span class="contact-value">Connect with me</span>
               </span>
             </a>
           </div>
@@ -76,7 +76,7 @@ const contactInfo = {
         
         <!-- Social Media Links -->
         <div class="social-section">
-          <h3 class="contact-subtitle">Follow My Work</h3>
+          <h3 class="contact-subtitle">What I'm Up To</h3>
           <div class="social-links">
             <a 
               href={contactInfo.github}
