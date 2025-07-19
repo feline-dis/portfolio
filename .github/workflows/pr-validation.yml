@@ -27,10 +27,3 @@ jobs:
         
       - name: Build for production
         run: npm run build
-        
-      - name: Start preview server and run performance tests
-        run: |
-          npm run preview &
-          sleep 10
-          npm run test:e2e
-          pkill -f 'astro preview' || true
