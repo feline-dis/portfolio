@@ -7,23 +7,14 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "build:production": "NODE_ENV=production astro check && astro build",
     "build:analyze": "astro build --analyze",
+    "start:production": "NODE_ENV=production astro preview --host 0.0.0.0 --port 3000",
+    "deploy:prepare": "npm run check && npm run build:production",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test": "vitest --run",
-    "test:watch": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
-    "test:all": "node test-runner.cjs --all",
-    "test:accessibility": "vitest --run tests/accessibility/",
-    "test:visual": "vitest --run tests/visual/",
-    "test:components": "vitest --run tests/components/",
-    "test:content": "vitest --run tests/content/",
-    "lighthouse": "lighthouse http://localhost:4321 --output=html --output-path=./lighthouse-report.html",
-    "perf:audit": "npm run build && npm run preview & sleep 5 && npm run lighthouse && pkill -f 'astro preview'",
-    "test:e2e": "node tests/performance/lighthouse-test.js",
-    "test:runner": "node test-runner.cjs"
+    "test": "vitest --run"
   },
   "keywords": [
     "astro",
@@ -47,6 +38,8 @@
     "happy-dom": "^18.0.1",
     "jsdom": "^26.1.0",
     "lighthouse": "^12.8.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
     "puppeteer": "^24.14.0",
     "vitest": "^3.2.4"
   }

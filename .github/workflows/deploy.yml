@@ -1,0 +1,105 @@
+name: Deploy to Fly.io
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Setup Fly.io CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Verify deployment health
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          
+          # Get the app name from fly.toml or use secret override
+          APP_NAME="${{ secrets.FLY_APP_NAME }}"
+          if [ -z "$APP_NAME" ]; then
+            APP_NAME=$(grep -E '^name = ' fly.toml | sed 's/name = "\(.*\)"/\1/')
+          fi
+          
+          if [ -z "$APP_NAME" ]; then
+            echo "Error: Could not determine app name"
+            exit 1
+          fi
+          
+          echo "Checking health of app: $APP_NAME"
+          
+          # Check app status
+          flyctl status --app "$APP_NAME"
+          
+          # Perform health check
+          APP_URL="https://${APP_NAME}.fly.dev"
+          echo "Performing health check on: $APP_URL"
+          
+          # Retry health check up to 5 times with exponential backoff
+          for i in {1..5}; do
+            if curl -f -s --max-time 30 "$APP_URL" > /dev/null; then
+              echo "✅ Health check passed on attempt $i"
+              break
+            else
+              if [ $i -eq 5 ]; then
+                echo "❌ Health check failed after 5 attempts"
+                echo "Deployment may have issues. Check Fly.io dashboard for details."
+                exit 1
+              else
+                echo "⏳ Health check failed on attempt $i, retrying in $((2**i)) seconds..."
+                sleep $((2**i))
+              fi
+            fi
+          done
+          
+          echo "🚀 Deployment successful and healthy!"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Deployment success notification
+        if: success()
+        run: |
+          APP_NAME="${{ secrets.FLY_APP_NAME }}"
+          if [ -z "$APP_NAME" ]; then
+            APP_NAME=$(grep -E '^name = ' fly.toml | sed 's/name = "\(.*\)"/\1/')
+          fi
+          
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Application URL: https://${APP_NAME}.fly.dev"
+          echo "📊 View logs: flyctl logs --app $APP_NAME"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: Deployment failure notification
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the workflow logs for details."
+          echo "You may need to:"
+          echo "  1. Check Fly.io service status"
+          echo "  2. Verify FLY_API_TOKEN secret is valid"
+          echo "  3. Ensure fly.toml configuration is correct"
+          echo "  4. Check application logs: flyctl logs"

@@ -26,7 +26,7 @@ const featuredPosts = sortedPosts.filter(post => post.data.featured);
 
 // SEO and meta information
 const pageTitle = 'Blog';
-const pageDescription = 'Technical articles, tutorials, and insights about web development, programming, and software engineering.';
+const pageDescription = 'Random thoughts on code, tech tricks I\'ve learned, and whatever I\'m figuring out lately.';
 ---
 
 <BaseLayout 
@@ -40,9 +40,9 @@ const pageDescription = 'Technical articles, tutorials, and insights about web d
     <section class="blog-header">
       <div class="container">
         <div class="header-content">
-          <h1 class="page-title">Blog</h1>
+          <h1 class="page-title">My Blog</h1>
           <p class="page-description">
-            Technical articles, tutorials, and insights about web development, programming, and software engineering.
+            Random thoughts on code, tech tricks I've learned, and whatever I'm figuring out lately.
           </p>
           
           <!-- Blog Stats -->
@@ -112,7 +112,7 @@ const pageDescription = 'Technical articles, tutorials, and insights about web d
     {featuredPosts.length > 0 && (
       <section class="featured-section">
         <div class="container">
-          <h2 class="section-title">Featured Articles</h2>
+          <h2 class="section-title">Stuff I'm Proud Of</h2>
           <div class="featured-grid">
             {featuredPosts.slice(0, 2).map(post => (
               <BlogCard post={post} class="featured-card" />
@@ -127,7 +127,7 @@ const pageDescription = 'Technical articles, tutorials, and insights about web d
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">
-            {featuredPosts.length > 0 ? 'All Articles' : 'Latest Articles'}
+            {featuredPosts.length > 0 ? 'Everything Else' : 'What I\'ve Written'}
           </h2>
           <div class="results-info">
             <span id="results-count">{sortedPosts.length} articles</span>
@@ -148,9 +148,9 @@ const pageDescription = 'Technical articles, tutorials, and insights about web d
               <circle cx="11" cy="11" r="8"/>
               <path d="M21 21l-4.35-4.35"/>
             </svg>
-            <h3 class="no-results-title">No articles found</h3>
+            <h3 class="no-results-title">Nothing found</h3>
             <p class="no-results-description">
-              Try adjusting your search terms or filters to find what you're looking for.
+              Try different search terms or clear the filters - maybe I haven't written about that yet!
             </p>
             <button id="clear-filters" class="clear-filters-btn">
               Clear all filters

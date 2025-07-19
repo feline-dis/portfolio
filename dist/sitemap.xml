@@ -3,29 +3,35 @@
   
   <url>
     <loc>https://portfolio.example.com/</loc>
-    <lastmod>2025-07-18T07:12:45.621Z</lastmod>
+    <lastmod>2025-07-19T18:35:37.749Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://portfolio.example.com/projects</loc>
-    <lastmod>2025-07-18T07:12:45.621Z</lastmod>
+    <lastmod>2025-07-19T18:35:37.749Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://portfolio.example.com/blog</loc>
-    <lastmod>2025-07-18T07:12:45.621Z</lastmod>
+    <lastmod>2025-07-19T18:35:37.749Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://portfolio.example.com/about</loc>
-    <lastmod>2025-07-18T07:12:45.621Z</lastmod>
+    <lastmod>2025-07-19T18:35:37.749Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
+  <url>
+    <loc>https://portfolio.example.com/blog/accept-interfaces-return-structs</loc>
+    <lastmod>2024-01-10T00:00:00.000Z</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://portfolio.example.com/blog/getting-started-with-astro</loc>
     <lastmod>2024-01-10T00:00:00.000Z</lastmod>
@@ -40,14 +46,8 @@
   </url>
   
   <url>
-    <loc>https://portfolio.example.com/projects/e-commerce-api</loc>
-    <lastmod>2023-11-20T00:00:00.000Z</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://portfolio.example.com/projects/task-manager-app</loc>
-    <lastmod>2024-01-15T00:00:00.000Z</lastmod>
+    <loc>https://portfolio.example.com/projects/go-radio-v2</loc>
+    <lastmod>2024-01-20T00:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
