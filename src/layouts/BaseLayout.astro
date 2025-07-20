@@ -2,6 +2,7 @@
 // Base layout component with navigation, footer, and comprehensive SEO
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
+import { Analytics } from '@vercel/analytics/next';
 
 export interface Props {
   title?: string;
@@ -423,6 +424,8 @@ const metaKeywords = [
   </head>
 
   <body>
+    <Analytics />
+
     <!-- Skip links for accessibility -->
     <div class="skip-links">
       <a href="#main-content" class="skip-link">Skip to main content</a>
