@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -95,6 +96,12 @@ export default defineConfig({
     prefetchAll: true,
     defaultStrategy: "viewport",
   },
+
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true, // set to false when using @vercel/analytics@1.4.0
+    },
+  }),
 
   // Remove experimental features that are not available in this version
 });
