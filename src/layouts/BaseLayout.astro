@@ -2,7 +2,7 @@
 // Base layout component with navigation, footer, and comprehensive SEO
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
-import Analytics from '@vercel/analytics/astro';
+import Analytics from "@vercel/analytics/astro";
 
 export interface Props {
   title?: string;
@@ -118,24 +118,30 @@ const metaKeywords = [
     <link rel="canonical" href={currentURL} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={type} />
-    <meta property="og:url" content={currentURL} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={imageURL} />
-    <meta property="og:image:alt" content={`${fullTitle} - Portfolio`} />
-    <meta property="og:site_name" content="Portfolio" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.jonhansen.dev/" />
+    <meta property="og:title" content="Home | Portfolio" />
+    <meta
+      property="og:description"
+      content="Hey there! Check out what I've been building and the random tech stuff I write about"
+    />
+    <meta
+      property="og:image"
+      content="https://metatags.io/images/meta-tags.png"
+    />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={currentURL} />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={imageURL} />
-    <meta name="twitter:image:alt" content={`${fullTitle} - Portfolio`} />
-    <meta name="twitter:creator" content="@portfolio" />
-    <meta name="twitter:site" content="@portfolio" />
+    <!-- X (Twitter) -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://www.jonhansen.dev/" />
+    <meta property="twitter:title" content="Home | Portfolio" />
+    <meta
+      property="twitter:description"
+      content="Hey there! Check out what I've been building and the random tech stuff I write about"
+    />
+    <meta
+      property="twitter:image"
+      content="https://metatags.io/images/meta-tags.png"
+    />
 
     <!-- Article specific meta tags -->
     {
@@ -188,15 +194,13 @@ const metaKeywords = [
       // Load and initialize Vercel Analytics
       (async () => {
         try {
-          const { inject } = await import('@vercel/analytics');
+          const { inject } = await import("@vercel/analytics");
           inject();
         } catch (error) {
-          console.warn('Failed to load Vercel Analytics:', error);
+          console.warn("Failed to load Vercel Analytics:", error);
         }
       })();
     </script>
-
-
 
     <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
