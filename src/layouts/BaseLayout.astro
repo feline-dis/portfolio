@@ -182,6 +182,21 @@ const metaKeywords = [
       set:html={JSON.stringify(structuredData)}
     />
 
+    <!-- Vercel Analytics -->
+    <script>
+      // Load and initialize Vercel Analytics
+      (async () => {
+        try {
+          const { inject } = await import('@vercel/analytics');
+          inject();
+        } catch (error) {
+          console.warn('Failed to load Vercel Analytics:', error);
+        }
+      })();
+    </script>
+
+
+
     <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

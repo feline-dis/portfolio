@@ -6,7 +6,7 @@ featured: true
 liveUrl: "https://jonhansen.dev"
 githubUrl: "https://github.com/feline-dis/portfolio"
 images: []
-publishDate: 2024-02-01
+publishDate: 2025-04-01
 ---
 
 # Portfolio Website
