@@ -6,7 +6,7 @@ featured: true
 liveUrl: "https://go-radio-v2.fly.dev"
 githubUrl: "https://github.com/feline-dis/go-radio-v2"
 images: ["/images/projects/go-radio-v2-1.png"]
-publishDate: 2024-01-20
+publishDate: 2025-05-20
 ---
 
 # Go Radio v2
