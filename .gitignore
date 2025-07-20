@@ -1,1 +1,9 @@
 .env*
+dist/
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-debug.txt
+.DS_Store
+.env
+.env.*
