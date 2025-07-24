@@ -1,15 +1,15 @@
 ---
-title: "Go Radio v2"
+title: "Go Radio"
 description: "A modern web radio streaming app with real-time playback and YouTube integration"
 technologies: ["Go", "React", "TypeScript", "WebSocket", "PostgreSQL", "AWS S3", "Docker"]
 featured: true
 liveUrl: "https://go-radio-v2.fly.dev"
-githubUrl: "https://github.com/feline-dis/go-radio-v2"
+githubUrl: "https://github.com/feline-dis/go-radio"
 images: ["/images/projects/go-radio-v2-1.png"]
 publishDate: 2025-05-20
 ---
 
-# Go Radio v2
+# Go Radio
 
 My personal web radio streaming application that I built after being inspired by the folks at [radio.uwu.network](https://radio.uwu.network). It's basically a Spotify jam session but smaller (and cooler).
 

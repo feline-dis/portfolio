@@ -23,7 +23,7 @@ A WebGL audio visualizer package that transforms audio into stunning real-time v
 
 ## The Story Behind It
 
-While working on [Go Radio v2](/projects/go-radio-v2), I wanted to add audio visualizations to make the listening experience more engaging. I found an amazing visualizer demo by [@tariqksoliman](https://github.com/tariqksoliman).
+While working on [Go Radio](/projects/go-radio-v2), I wanted to add audio visualizations to make the listening experience more engaging. I found an amazing visualizer demo by [@tariqksoliman](https://github.com/tariqksoliman).
 
 The original was a standalone demo, but I saw potential to make it accessible to other developers. So I forked it, refactored the code into a proper npm package, added TypeScript definitions, and created a clean API that anyone could use that was inspired by the legendary Milkdrop visualizer (via [Butterchurn](https://github.com/jberg/butterchurn) by [@jberg](https://github.com/jberg)).
 
@@ -81,4 +81,4 @@ The project taught me about the balance between innovation and attribution in op
 - **React/Vue Components**: Framework-specific wrappers for easier integration
 - **Custom Preset Creation**: Tools for developers to create their own visualizations
 
-Check out the [npm package](https://www.npmjs.com/package/vissonance) or see it in action on [Go Radio v2](https://go-radio-v2.fly.dev).
+Check out the [npm package](https://www.npmjs.com/package/vissonance) or see it in action on [Go Radio]()(https://go-radio-v2.fly.dev).
